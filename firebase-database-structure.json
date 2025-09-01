@@ -1,0 +1,101 @@
+{
+  "sections": {
+    "portfolio": {
+      "title": "Gaurav's Portfolio",
+      "projects": {
+        "project1": {
+          "id": "project1",
+          "title": "E-Commerce Platform",
+          "description": "A full-stack e-commerce platform built with Next.js, TypeScript, and Firebase. Features include user authentication, product catalog, shopping cart, and payment integration.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["Next.js", "TypeScript", "Firebase", "Stripe", "TailwindCSS"],
+          "liveUrl": "https://ecommerce-demo.vercel.app",
+          "githubUrl": "https://github.com/gauravpatil/ecommerce-platform",
+          "featured": true,
+          "createdAt": "2024-01-15T00:00:00Z"
+        },
+        "project2": {
+          "id": "project2",
+          "title": "Task Management App",
+          "description": "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["React", "Node.js", "Socket.io", "MongoDB", "Express"],
+          "liveUrl": "https://taskmanager-demo.vercel.app",
+          "githubUrl": "https://github.com/gauravpatil/task-manager",
+          "featured": true,
+          "createdAt": "2024-02-20T00:00:00Z"
+        }
+      }
+    },
+    "beta": {
+      "title": "Beta Projects",
+      "projects": {
+        "beta1": {
+          "id": "beta1",
+          "title": "Weather Dashboard",
+          "description": "A responsive weather dashboard with location-based forecasts, interactive maps, and weather alerts.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["Vue.js", "OpenWeather API", "Chart.js", "CSS3"],
+          "liveUrl": "https://weather-dashboard-demo.vercel.app",
+          "githubUrl": "https://github.com/gauravpatil/weather-dashboard",
+          "featured": false,
+          "createdAt": "2024-03-10T00:00:00Z"
+        }
+      }
+    },
+    "ai": {
+      "title": "AI Integrated Projects",
+      "projects": {
+        "ai1": {
+          "id": "ai1",
+          "title": "AI Content Generator",
+          "description": "An AI-powered content generation tool using OpenAI's GPT API. Features include blog post generation, social media content, and SEO optimization.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["Next.js", "OpenAI API", "Python", "FastAPI", "PostgreSQL"],
+          "liveUrl": "https://ai-content-generator.vercel.app",
+          "githubUrl": "https://github.com/gauravpatil/ai-content-generator",
+          "featured": true,
+          "createdAt": "2024-04-05T00:00:00Z"
+        },
+        "ai2": {
+          "id": "ai2",
+          "title": "Smart Image Analyzer",
+          "description": "An intelligent image analysis tool that uses machine learning to detect objects, analyze sentiment, and extract text from images.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["Python", "TensorFlow", "OpenCV", "Flask", "AWS"],
+          "liveUrl": "https://image-analyzer-demo.vercel.app",
+          "githubUrl": "https://github.com/gauravpatil/smart-image-analyzer",
+          "featured": true,
+          "createdAt": "2024-05-12T00:00:00Z"
+        }
+      }
+    },
+    "live": {
+      "title": "Live Work",
+      "projects": {
+        "live1": {
+          "id": "live1",
+          "title": "Corporate Website Redesign",
+          "description": "Complete redesign and development of a corporate website with modern UI/UX, improved performance, and mobile responsiveness.",
+          "image": "https://via.placeholder.com/400x300",
+          "tags": ["Next.js", "Framer Motion", "Sanity CMS", "Vercel"],
+          "liveUrl": "https://corporate-website-demo.com",
+          "githubUrl": "",
+          "featured": false,
+          "createdAt": "2024-06-01T00:00:00Z"
+        }
+      }
+    },
+    "otherPortfolio": {
+      "title": "Main Portfolio",
+      "url": "https://gauravpatil.dev"
+    }
+  },
+  "resume": {
+    "latest": {
+      "title": "Resume v2024",
+      "url": "https://firebasestorage.googleapis.com/v0/b/gauravs-workspace-933d7.appspot.com/o/resumes%2Fresume-latest.pdf?alt=media",
+      "updated": "2024-08-15T00:00:00Z"
+    }
+  }
+}
