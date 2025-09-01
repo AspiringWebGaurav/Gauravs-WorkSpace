@@ -1,85 +1,171 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Download, Calendar, FileText, Save, AlertCircle } from 'lucide-react';
+import { Upload, Download, Calendar, FileText, Save, AlertCircle, CheckCircle, Clock, Trash2 } from 'lucide-react';
 import { Resume } from '@/types';
-import { uploadResume } from '@/lib/storage';
+import { uploadResume, deleteResumeFile } from '@/lib/storage';
+import { deleteResume } from '@/lib/database';
 import { formatDate, generateId } from '@/lib/utils';
+import { generateResumeTitle, validateFile, getFileInfo, getUploadProgressMessage } from '@/lib/fileUtils';
+import { useToast } from '@/components/providers/ToastProvider';
+import { useDownload } from '@/lib/downloadUtils';
 
 interface ResumeManagerProps {
   resume: Resume | null;
   onResumeUpdate: (resume: Resume) => void;
+  onResumeDelete: () => void;
 }
 
-export default function ResumeManager({ resume, onResumeUpdate }: ResumeManagerProps) {
+export default function ResumeManager({ resume, onResumeUpdate, onResumeDelete }: ResumeManagerProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<any>(null);
+  const [progressMessage, setProgressMessage] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  const { showSuccess, showError, showInfo, showWarning } = useToast();
+  const { downloadResume } = useDownload();
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    if (file.type !== 'application/pdf') {
-      setError('Please select a PDF file');
+    // Validate file
+    const validation = validateFile(file, 'resume');
+    if (!validation.isValid) {
+      setError(validation.errors.join('. '));
+      showError('Invalid File', validation.errors.join('. '));
       return;
     }
 
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setError('File size must be less than 10MB');
-      return;
-    }
+    setError('');
+    setSelectedFile(file);
+    
+    // Create file preview info
+    const fileInfo = getFileInfo(file);
+    setFilePreview(fileInfo);
+    
+    showInfo('File Selected', `${fileInfo.name} (${fileInfo.sizeFormatted}) is ready to upload`);
+  };
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) return;
 
     setError('');
     setSuccess('');
     setIsUploading(true);
     setUploadProgress(0);
+    setProgressMessage('Preparing upload...');
 
     try {
-      // Simulate upload progress
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 200);
-
       const filename = `resume-${generateId()}.pdf`;
-      const downloadURL = await uploadResume(file, filename);
+      
+      // Upload with progress tracking
+      const downloadURL = await uploadResume(selectedFile, filename, (progress) => {
+        setUploadProgress(progress);
+        setProgressMessage(getUploadProgressMessage(progress, selectedFile.name));
+      });
 
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-
+      // Generate dynamic title
+      const dynamicTitle = generateResumeTitle(selectedFile.name);
+      
       const newResume: Resume = {
-        title: `Resume v${Date.now()}`,
+        title: dynamicTitle,
         url: downloadURL,
         updated: new Date().toISOString(),
+        originalFilename: selectedFile.name, // Store the original filename
       };
 
       await onResumeUpdate(newResume);
-      setSuccess('Resume uploaded successfully!');
       
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(''), 3000);
-    } catch (error) {
+      // Show success notification
+      showSuccess(
+        'Resume Uploaded Successfully!',
+        `${dynamicTitle} is now available for download`,
+        {
+          label: 'Download Now',
+          onClick: () => {
+            try {
+              downloadResume(downloadURL, dynamicTitle, selectedFile.name);
+            } catch (error) {
+              console.error('Download from toast failed:', error);
+            }
+          }
+        }
+      );
+      
+      setSuccess(`Resume uploaded successfully as "${dynamicTitle}"`);
+      setSelectedFile(null);
+      setFilePreview(null);
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccess(''), 5000);
+    } catch (error: any) {
       console.error('Error uploading resume:', error);
-      setError('Failed to upload resume. Please try again.');
+      const errorMessage = error.message || 'Failed to upload resume. Please try again.';
+      setError(errorMessage);
+      showError('Upload Failed', errorMessage);
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
+      setProgressMessage('');
+    }
+  };
+
+  const handleCancelUpload = () => {
+    setSelectedFile(null);
+    setFilePreview(null);
+    setError('');
+  };
+
+  const handleDeleteResume = async () => {
+    if (!resume?.url || !resume?.title) return;
+
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${resume.title}"?\n\nThis action cannot be undone and will remove the resume from your workspace.`
+    );
+
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    
+    try {
+      // Delete file from storage first
+      await deleteResumeFile(resume.url);
+      
+      // Then delete from database
+      await deleteResume();
+      
+      // Update parent component
+      onResumeDelete();
+      
+      showSuccess(
+        'Resume Deleted Successfully',
+        `${resume.title} has been permanently removed from your workspace`
+      );
+      
+    } catch (error: any) {
+      console.error('Error deleting resume:', error);
+      const errorMessage = error.message || 'Failed to delete resume. Please try again.';
+      showError('Delete Failed', errorMessage);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const handleDownload = () => {
-    if (resume?.url) {
-      window.open(resume.url, '_blank');
+    if (resume?.url && resume?.title) {
+      try {
+        downloadResume(resume.url, resume.title, resume.originalFilename);
+      } catch (error) {
+        // Error is already handled by useDownload hook
+        console.error('Download failed:', error);
+      }
     }
   };
 
@@ -116,13 +202,32 @@ export default function ResumeManager({ resume, onResumeUpdate }: ResumeManagerP
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={handleDownload}
-                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                >
-                  <Download size={16} />
-                  <span>Download</span>
-                </button>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleDownload}
+                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    <Download size={16} />
+                    <span>Download</span>
+                  </button>
+                  <button
+                    onClick={handleDeleteResume}
+                    disabled={isDeleting}
+                    className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
+                  >
+                    {isDeleting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Deleting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Trash2 size={16} />
+                        <span>Delete</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
               {/* Stats */}
@@ -202,41 +307,96 @@ export default function ResumeManager({ resume, onResumeUpdate }: ResumeManagerP
 
         {/* Upload Area */}
         <div className="space-y-4">
-          <div className="flex items-center justify-center w-full">
-            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click to upload</span> your resume
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  PDF files only (max 10MB)
-                </p>
+          {/* File Preview */}
+          {filePreview && !isUploading && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <FileText className="text-blue-600 dark:text-blue-400" size={20} />
+                  <div>
+                    <h4 className="font-medium text-blue-800 dark:text-blue-200">
+                      {filePreview.name}
+                    </h4>
+                    <p className="text-sm text-blue-600 dark:text-blue-300">
+                      {filePreview.sizeFormatted} • PDF • Ready to upload
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleFileUpload}
+                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    <Upload size={16} />
+                    <span>Upload</span>
+                  </button>
+                  <button
+                    onClick={handleCancelUpload}
+                    className="flex items-center space-x-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    <span>Cancel</span>
+                  </button>
+                </div>
               </div>
-              <input
-                type="file"
-                className="hidden"
-                accept=".pdf"
-                onChange={handleFileUpload}
-                disabled={isUploading}
-              />
-            </label>
-          </div>
+            </motion.div>
+          )}
+
+          {/* Upload Dropzone */}
+          {!filePreview && !isUploading && (
+            <div className="flex items-center justify-center w-full">
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600 transition-colors">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
+                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold">Click to select</span> your resume
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    PDF files only (max 10MB)
+                  </p>
+                </div>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept=".pdf"
+                  onChange={handleFileSelect}
+                />
+              </label>
+            </div>
+          )}
 
           {/* Upload Progress */}
           {isUploading && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>Uploading resume...</span>
-                <span>{uploadProgress}%</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                <div className="flex-1">
+                  <div className="flex justify-between text-sm text-blue-800 dark:text-blue-200 mb-1">
+                    <span className="font-medium">{progressMessage}</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full bg-blue-200 dark:bg-blue-800 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${uploadProgress}%` }}
-                ></div>
-              </div>
-            </div>
+              {filePreview && (
+                <div className="flex items-center space-x-2 text-sm text-blue-600 dark:text-blue-300">
+                  <FileText size={16} />
+                  <span>{filePreview.name} ({filePreview.sizeFormatted})</span>
+                </div>
+              )}
+            </motion.div>
           )}
 
           {/* Upload Guidelines */}

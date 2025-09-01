@@ -6,10 +6,12 @@ import { Download, Calendar, FileText, ExternalLink } from 'lucide-react';
 import { getResume } from '@/lib/database';
 import { Resume } from '@/types';
 import { formatDate } from '@/lib/utils';
+import { useDownload } from '@/lib/downloadUtils';
 
 export default function ResumePage() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [loading, setLoading] = useState(true);
+  const { downloadResume } = useDownload();
 
   useEffect(() => {
     const fetchResume = async () => {
@@ -29,8 +31,13 @@ export default function ResumePage() {
   }, []);
 
   const handleDownloadResume = () => {
-    if (resume?.url) {
-      window.open(resume.url, '_blank');
+    if (resume?.url && resume?.title) {
+      try {
+        downloadResume(resume.url, resume.title, resume.originalFilename);
+      } catch (error) {
+        // Error is already handled by useDownload hook
+        console.error('Download failed:', error);
+      }
     }
   };
 

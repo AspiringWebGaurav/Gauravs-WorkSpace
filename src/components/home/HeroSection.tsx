@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { Download, ExternalLink, ArrowDown } from 'lucide-react';
 import { getResume, getSections } from '@/lib/database';
 import { Resume } from '@/types';
+import { useDownload } from '@/lib/downloadUtils';
 
 export default function HeroSection() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [otherPortfolioUrl, setOtherPortfolioUrl] = useState<string>('');
+  const { downloadResume } = useDownload();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,8 +36,13 @@ export default function HeroSection() {
   }, []);
 
   const handleDownloadResume = () => {
-    if (resume?.url) {
-      window.open(resume.url, '_blank');
+    if (resume?.url && resume?.title) {
+      try {
+        downloadResume(resume.url, resume.title, resume.originalFilename);
+      } catch (error) {
+        // Error is already handled by useDownload hook
+        console.error('Download failed:', error);
+      }
     }
   };
 

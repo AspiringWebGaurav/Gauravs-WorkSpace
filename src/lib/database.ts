@@ -85,6 +85,17 @@ export const updateResume = async (resume: Resume) => {
   }
 };
 
+// Delete resume data
+export const deleteResume = async () => {
+  try {
+    const resumeRef = ref(database, 'resume/latest');
+    await remove(resumeRef);
+  } catch (error) {
+    console.error('Error deleting resume:', error);
+    throw error;
+  }
+};
+
 // Real-time listeners
 export const listenToSections = (callback: (data: any) => void) => {
   const sectionsRef = ref(database, 'sections');

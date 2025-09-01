@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { X, Upload, Save, Link, Github, Tag } from 'lucide-react';
+import { X, Upload, Save, Link, Github, Tag, FileImage, CheckCircle, Trash2 } from 'lucide-react';
 import { Project } from '@/types';
-import { uploadImage } from '@/lib/storage';
+import { uploadImage, deleteFileByURL } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
+import { generateProjectImageName, validateFile, getFileInfo, getUploadProgressMessage } from '@/lib/fileUtils';
+import { useToast } from '@/components/providers/ToastProvider';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -28,6 +30,12 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('');
+  const [fileInfo, setFileInfo] = useState<any>(null);
+  const [isDeletingImage, setIsDeletingImage] = useState(false);
+  
+  const { showSuccess, showError, showInfo } = useToast();
 
   // Initialize form with project data if editing
   useEffect(() => {
@@ -55,14 +63,25 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validate file
+    const validation = validateFile(file, 'image');
+    if (!validation.isValid) {
+      showError('Invalid Image', validation.errors.join('. '));
+      return;
     }
+
+    setImageFile(file);
+    setFileInfo(getFileInfo(file));
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+    
+    showInfo('Image Selected', `${file.name} is ready to upload`);
   };
 
   const handleAddTag = () => {
@@ -82,6 +101,42 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
     }));
   };
 
+  const handleRemoveImage = async () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to remove this image?\n\nThis will clear the current image selection.'
+    );
+
+    if (!confirmed) return;
+
+    setIsDeletingImage(true);
+
+    try {
+      // If there's an existing image URL (editing mode), delete from storage
+      if (formData.image && formData.image.startsWith('https://')) {
+        try {
+          await deleteFileByURL(formData.image);
+          showSuccess('Image Deleted', 'Project image has been removed from storage');
+        } catch (error) {
+          console.warn('Could not delete old image from storage:', error);
+          // Continue anyway - user might want to remove the reference
+        }
+      }
+
+      // Clear image data
+      setFormData(prev => ({ ...prev, image: '' }));
+      setImageFile(null);
+      setImagePreview('');
+      setFileInfo(null);
+
+      showInfo('Image Removed', 'Image has been cleared from the project');
+    } catch (error: any) {
+      console.error('Error removing image:', error);
+      showError('Remove Failed', 'Failed to remove image. Please try again.');
+    } finally {
+      setIsDeletingImage(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -95,16 +150,30 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
     // Upload image if a new file was selected
     if (imageFile) {
       setUploadingImage(true);
+      setUploadProgress(0);
+      setProgressMessage('Preparing image upload...');
+      
       try {
-        const filename = `${generateId()}-${imageFile.name}`;
-        imageUrl = await uploadImage(imageFile, filename);
-      } catch (error) {
+        const filename = generateProjectImageName(imageFile.name, formData.title);
+        
+        imageUrl = await uploadImage(imageFile, filename, (progress) => {
+          setUploadProgress(progress);
+          setProgressMessage(getUploadProgressMessage(progress, imageFile.name));
+        });
+        
+        showSuccess('Image Uploaded', `Project image uploaded successfully`);
+      } catch (error: any) {
         console.error('Error uploading image:', error);
-        alert('Failed to upload image. Please try again.');
+        const errorMessage = error.message || 'Failed to upload image. Please try again.';
+        showError('Upload Failed', errorMessage);
         setUploadingImage(false);
+        setUploadProgress(0);
+        setProgressMessage('');
         return;
       }
       setUploadingImage(false);
+      setUploadProgress(0);
+      setProgressMessage('');
     }
 
     const projectData: Omit<Project, 'id'> = {
@@ -184,25 +253,71 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
                     alt="Preview"
                     className="w-full h-48 object-cover rounded-lg"
                   />
+                  {fileInfo && (
+                    <div className="absolute bottom-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
+                      {fileInfo.name} ({fileInfo.sizeFormatted})
+                    </div>
+                  )}
+                  <button
+                    onClick={handleRemoveImage}
+                    disabled={isDeletingImage}
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white p-2 rounded-full transition-colors disabled:cursor-not-allowed"
+                    title="Remove image"
+                  >
+                    {isDeletingImage ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    ) : (
+                      <Trash2 size={16} />
+                    )}
+                  </button>
                 </div>
               )}
-              <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or WEBP</p>
+              
+              {/* Upload Progress */}
+              {uploadingImage && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                    <div className="flex-1">
+                      <div className="flex justify-between text-sm text-blue-800 dark:text-blue-200 mb-1">
+                        <span className="font-medium">{progressMessage}</span>
+                        <span>{uploadProgress}%</span>
+                      </div>
+                      <div className="w-full bg-blue-200 dark:bg-blue-800 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </label>
-              </div>
+                </motion.div>
+              )}
+              
+              {!uploadingImage && (
+                <div className="flex items-center justify-center w-full">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600 transition-colors">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
+                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or WEBP (max 5MB)</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      disabled={uploadingImage}
+                    />
+                  </label>
+                </div>
+              )}
             </div>
           </div>
 

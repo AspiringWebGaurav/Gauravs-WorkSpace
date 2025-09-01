@@ -20,6 +20,7 @@ export interface Resume {
   title: string;
   url: string;
   updated: string;
+  originalFilename?: string; // Store the original uploaded filename
 }
 
 export interface DatabaseStructure {

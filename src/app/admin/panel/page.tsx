@@ -16,11 +16,12 @@ import {
   X
 } from 'lucide-react';
 import { useAuthState } from '@/hooks/useAuth';
-import { getSections, addProject, updateProject, deleteProject, getResume, updateResume } from '@/lib/database';
-import { uploadImage, uploadResume } from '@/lib/storage';
+import { getSections, addProject, updateProject, deleteProject, getResume, updateResume, deleteResume, listenToSections, listenToResume } from '@/lib/database';
+import { uploadImage, uploadResume, deleteFileByURL } from '@/lib/storage';
 import { Project, ProjectSection as ProjectSectionType, Resume } from '@/types';
 import ProjectForm from '@/components/admin/ProjectForm';
 import ResumeManager from '@/components/admin/ResumeManager';
+import { useToast } from '@/components/providers/ToastProvider';
 
 export default function AdminPanelPage() {
   const [sections, setSections] = useState<Record<string, ProjectSectionType>>({});
@@ -33,6 +34,7 @@ export default function AdminPanelPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { user, loading: authLoading, signOut } = useAuthState();
+  const { showSuccess, showError, showInfo } = useToast();
   const router = useRouter();
 
   // Redirect if not authenticated
@@ -42,33 +44,31 @@ export default function AdminPanelPage() {
     }
   }, [user, authLoading, router]);
 
-  // Fetch data
+  // Set up real-time listeners
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [sectionsData, resumeData] = await Promise.all([
-          getSections(),
-          getResume()
-        ]);
+    if (!user) return;
 
-        if (sectionsData) {
-          const { otherPortfolio, ...projectSections } = sectionsData;
-          setSections(projectSections);
-        }
-
-        if (resumeData) {
-          setResume(resumeData);
-        }
-      } catch (error) {
-        console.error('Error fetching admin data:', error);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    
+    // Listen to sections changes
+    const unsubscribeSections = listenToSections((sectionsData) => {
+      if (sectionsData) {
+        const { otherPortfolio, ...projectSections } = sectionsData;
+        setSections(projectSections);
       }
-    };
+      setLoading(false);
+    });
 
-    if (user) {
-      fetchData();
-    }
+    // Listen to resume changes
+    const unsubscribeResume = listenToResume((resumeData) => {
+      setResume(resumeData);
+    });
+
+    // Cleanup listeners on unmount
+    return () => {
+      unsubscribeSections();
+      unsubscribeResume();
+    };
   }, [user]);
 
   const handleSignOut = async () => {
@@ -91,28 +91,32 @@ export default function AdminPanelPage() {
   };
 
   const handleDeleteProject = async (projectId: string) => {
-    if (!confirm('Are you sure you want to delete this project?')) {
+    const projectToDelete = sections[selectedSection]?.projects?.[projectId];
+    const projectTitle = projectToDelete?.title || 'Unknown Project';
+    
+    if (!confirm(`Are you sure you want to delete "${projectTitle}"?\n\nThis will also remove any associated images and cannot be undone.`)) {
       return;
     }
 
     try {
-      await deleteProject(selectedSection, projectId);
-      
-      // Update local state
-      setSections(prev => ({
-        ...prev,
-        [selectedSection]: {
-          ...prev[selectedSection],
-          projects: Object.fromEntries(
-            Object.entries(prev[selectedSection]?.projects || {}).filter(
-              ([id]) => id !== projectId
-            )
-          )
+      // Delete project image from storage if it exists
+      if (projectToDelete?.image && projectToDelete.image.startsWith('https://')) {
+        try {
+          await deleteFileByURL(projectToDelete.image);
+        } catch (error) {
+          console.warn('Could not delete project image from storage:', error);
+          // Continue with project deletion even if image deletion fails
         }
-      }));
-    } catch (error) {
+      }
+
+      // Delete project from database
+      await deleteProject(selectedSection, projectId);
+      showSuccess('Project Deleted', `${projectTitle} and its associated files have been removed successfully`);
+      // Real-time listener will automatically update the UI
+    } catch (error: any) {
       console.error('Error deleting project:', error);
-      alert('Failed to delete project. Please try again.');
+      const errorMessage = error.message || 'Failed to delete project. Please try again.';
+      showError('Delete Failed', errorMessage);
     }
   };
 
@@ -126,28 +130,20 @@ export default function AdminPanelPage() {
         // Update existing project
         await updateProject(selectedSection, editingProject.id, projectData);
         result = { ...projectData, id: editingProject.id };
+        showSuccess('Project Updated', `${projectData.title} has been updated successfully`);
       } else {
         // Add new project
         result = await addProject(selectedSection, projectData);
+        showSuccess('Project Created', `${projectData.title} has been added to ${sections[selectedSection]?.title || selectedSection}`);
       }
 
-      // Update local state
-      setSections(prev => ({
-        ...prev,
-        [selectedSection]: {
-          ...prev[selectedSection],
-          projects: {
-            ...prev[selectedSection]?.projects,
-            [result.id]: result
-          }
-        }
-      }));
-
+      // Real-time listeners will automatically update the UI
       setShowProjectForm(false);
       setEditingProject(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving project:', error);
-      alert('Failed to save project. Please try again.');
+      const errorMessage = error.message || 'Failed to save project. Please try again.';
+      showError('Save Failed', errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -156,10 +152,24 @@ export default function AdminPanelPage() {
   const handleResumeUpdate = async (newResume: Resume) => {
     try {
       await updateResume(newResume);
-      setResume(newResume);
-    } catch (error) {
+      // Real-time listener will automatically update the UI
+      showInfo('Dashboard Updated', 'Resume information has been updated across the site');
+    } catch (error: any) {
       console.error('Error updating resume:', error);
-      alert('Failed to update resume. Please try again.');
+      const errorMessage = error.message || 'Failed to update resume. Please try again.';
+      showError('Update Failed', errorMessage);
+      throw error; // Re-throw to let ResumeManager handle it
+    }
+  };
+
+  const handleResumeDelete = async () => {
+    try {
+      // Real-time listener will automatically update the UI to show no resume
+      showInfo('Dashboard Updated', 'Resume has been removed from the workspace');
+    } catch (error: any) {
+      console.error('Error handling resume deletion:', error);
+      const errorMessage = error.message || 'Failed to update dashboard after deletion.';
+      showError('Update Failed', errorMessage);
     }
   };
 
@@ -358,9 +368,10 @@ export default function AdminPanelPage() {
 
         {/* Resume Tab */}
         {activeTab === 'resume' && (
-          <ResumeManager 
-            resume={resume} 
-            onResumeUpdate={handleResumeUpdate} 
+          <ResumeManager
+            resume={resume}
+            onResumeUpdate={handleResumeUpdate}
+            onResumeDelete={handleResumeDelete}
           />
         )}
       </div>

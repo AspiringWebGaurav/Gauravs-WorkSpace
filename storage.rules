@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Public read access for all files
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+    
+    // Admin write access for images
+    match /images/{imageId} {
+      allow write: if request.auth != null && request.auth.token.email == 'gaurav@admin.kop'
+                   && resource.size < 5 * 1024 * 1024 // 5MB limit
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Admin write access for resumes
+    match /resumes/{resumeId} {
+      allow write: if request.auth != null && request.auth.token.email == 'gaurav@admin.kop'
+                   && resource.size < 10 * 1024 * 1024 // 10MB limit
+                   && request.resource.contentType == 'application/pdf';
+    }
+  }
+}

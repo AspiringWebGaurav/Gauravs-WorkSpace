@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": "auth != null && auth.token.email == 'gaurav@admin.kop'",
+    "sections": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'gaurav@admin.kop'"
+    },
+    "resume": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'gaurav@admin.kop'"
+    }
+  }
+}
