@@ -20,6 +20,8 @@ interface ToastComponentProps extends ToastProps {
   onClose: (id: string) => void;
 }
 
+// aas
+
 const Toast = ({ id, type, title, message, duration = 5000, action, onClose }: ToastComponentProps) => {
   useEffect(() => {
     if (duration > 0) {
