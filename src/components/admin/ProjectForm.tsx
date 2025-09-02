@@ -44,7 +44,7 @@ export default function ProjectForm({ project, isSubmitting, onSubmit, onClose }
         title: project.title,
         description: project.description,
         image: project.image,
-        tags: project.tags,
+        tags: project.tags || [],
         liveUrl: project.liveUrl || '',
         githubUrl: project.githubUrl || '',
         featured: project.featured,

@@ -3,24 +3,31 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Upload, 
-  LogOut, 
-  Settings, 
+import {
+  LogOut,
+  Settings,
   FolderOpen,
-  FileText,
-  Save,
-  X
+  FileText
 } from 'lucide-react';
 import { useAuthState } from '@/hooks/useAuth';
-import { getSections, addProject, updateProject, deleteProject, getResume, updateResume, deleteResume, listenToSections, listenToResume } from '@/lib/database';
-import { uploadImage, uploadResume, deleteFileByURL } from '@/lib/storage';
+import {
+  getSections,
+  addProject,
+  updateProject,
+  deleteProject,
+  getResume,
+  updateResume,
+  deleteResume,
+  listenToSections,
+  listenToResume,
+  moveProjects,
+  duplicateProject
+} from '@/lib/database';
+import { deleteFileByURL } from '@/lib/storage';
 import { Project, ProjectSection as ProjectSectionType, Resume } from '@/types';
 import ProjectForm from '@/components/admin/ProjectForm';
 import ResumeManager from '@/components/admin/ResumeManager';
+import EnhancedAdminDashboard from '@/components/admin/EnhancedAdminDashboard';
 import { useToast } from '@/components/providers/ToastProvider';
 
 export default function AdminPanelPage() {
@@ -149,6 +156,24 @@ export default function AdminPanelPage() {
     }
   };
 
+  const handleMoveProjects = async (projectIds: string[], targetSection: string) => {
+    try {
+      await moveProjects(projectIds, selectedSection, targetSection);
+    } catch (error) {
+      console.error('Error moving projects:', error);
+      throw error;
+    }
+  };
+
+  const handleDuplicateProject = async (project: Project) => {
+    try {
+      await duplicateProject(selectedSection, project);
+    } catch (error) {
+      console.error('Error duplicating project:', error);
+      throw error;
+    }
+  };
+
   const handleResumeUpdate = async (newResume: Resume) => {
     try {
       await updateResume(newResume);
@@ -253,117 +278,17 @@ export default function AdminPanelPage() {
 
         {/* Projects Tab */}
         {activeTab === 'projects' && (
-          <div className="space-y-6">
-            {/* Section Selector and Add Button */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Select Section
-                </label>
-                <select
-                  value={selectedSection}
-                  onChange={(e) => setSelectedSection(e.target.value)}
-                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  {sectionKeys.map(key => (
-                    <option key={key} value={key}>
-                      {sections[key]?.title || key}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                onClick={handleAddProject}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                <Plus size={18} />
-                <span>Add Project</span>
-              </button>
-            </div>
-
-            {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentSectionProjects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-                >
-                  {/* Project Image */}
-                  <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-white text-xl font-bold">
-                        {project.title.charAt(0)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Project Info */}
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {project.tags.slice(0, 3).map((tag, index) => (
-                        <span
-                          key={index}
-                          className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        project.featured
-                          ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                      }`}>
-                        {project.featured ? 'Featured' : 'Regular'}
-                      </span>
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleEditProject(project)}
-                          className="p-1 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                        >
-                          <Edit size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteProject(project.id)}
-                          className="p-1 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Empty State */}
-            {currentSectionProjects.length === 0 && (
-              <div className="text-center py-12">
-                <FolderOpen className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-                  No projects
-                </h3>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  Get started by adding a new project.
-                </p>
-              </div>
-            )}
-          </div>
+          <EnhancedAdminDashboard
+            sections={sections}
+            selectedSection={selectedSection}
+            onSectionChange={setSelectedSection}
+            onAddProject={handleAddProject}
+            onEditProject={handleEditProject}
+            onDeleteProject={handleDeleteProject}
+            onUpdateProject={updateProject}
+            onMoveProjects={handleMoveProjects}
+            onDuplicateProject={handleDuplicateProject}
+          />
         )}
 
         {/* Resume Tab */}

@@ -53,7 +53,7 @@ export default function ProjectsPage() {
 
   // Get all unique tags
   const allTags = Array.from(
-    new Set(allProjects.flatMap(project => project.tags))
+    new Set(allProjects.flatMap(project => project.tags || []))
   ).sort();
 
   // Filter projects based on search, section, and tags
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
       filtered = filtered.filter(project =>
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+        (project.tags || []).some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -77,7 +77,7 @@ export default function ProjectsPage() {
     // Filter by tags
     if (selectedTags.length > 0) {
       filtered = filtered.filter(project =>
-        selectedTags.every(tag => project.tags.includes(tag))
+        selectedTags.every(tag => (project.tags || []).includes(tag))
       );
     }
 
