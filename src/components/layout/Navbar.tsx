@@ -1,89 +1,136 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, Home, FolderOpen, FileText, Settings } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-const navItems = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'Projects', href: '/projects', icon: FolderOpen },
-  { name: 'Resume', href: '/resume', icon: FileText },
-  { name: 'Admin', href: '/admin/login', icon: Settings },
-];
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MovingBorderButton } from "@/components/ui/moving-border";
+import { NAVIGATION_LINKS, isActiveLink } from "@/lib/constants";
+import { useHydrationSafe } from "@/hooks/useHydrationSafe";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const mounted = useHydrationSafe();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 4);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    // close mobile menu on route change
+    setOpen(false);
+  }, [pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <nav
+      className={[
+        "fixed inset-x-0 top-0 z-50 transition-all",
+        "bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-md",
+        scrolled
+          ? "shadow-sm border-b border-white/[0.1] dark:border-white/[0.05]"
+          : "border-b border-transparent",
+      ].join(" ")}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">GW</span>
-            </div>
-            <span className="font-bold text-xl text-gray-900 dark:text-white">
-              Gaurav's Workspace
+        <div className="flex h-16 items-center justify-between">
+          {/* Brand */}
+          <Link href="/" className="flex items-center gap-2">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white text-sm font-semibold shadow-sm">
+              GW
+            </span>
+            <span className="font-semibold text-lg text-gray-900 dark:text-gray-100 tracking-tight">
+              Gaurav&apos;s Workspace
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => {
+          {/* Desktop nav - only render after hydration */}
+          <div className="hidden md:flex items-center gap-2">
+            {mounted && NAVIGATION_LINKS.map((item) => {
+              const active = isActiveLink(pathname, item.href);
               const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
+              
+              return active ? (
+                <MovingBorderButton
+                  key={item.href}
+                  as={Link}
                   href={item.href}
-                  className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                  borderRadius="1.5rem"
+                  className="px-3 py-1.5 text-sm"
+                  duration={4000}
                 >
-                  <Icon size={18} />
-                  <span>{item.name}</span>
+                  <Icon size={16} />
+                  {item.label}
+                </MovingBorderButton>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors bg-white/[0.08] dark:bg-black/[0.12] text-gray-700 dark:text-gray-300 border border-white/[0.1] dark:border-white/[0.05] hover:text-gray-900 dark:hover:text-white hover:bg-white/[0.15] dark:hover:bg-black/[0.2]"
+                >
+                  <Icon size={16} />
+                  {item.label}
                 </Link>
               );
             })}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/80 dark:border-gray-800/80 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+            aria-label="Toggle navigation"
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800"
-          >
-            <div className="flex flex-col space-y-4">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 px-2 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
-                    <Icon size={20} />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {open && mounted && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="md:hidden pb-4"
+            >
+              <div className="grid gap-2">
+                {NAVIGATION_LINKS.map((item) => {
+                  const active = isActiveLink(pathname, item.href);
+                  const Icon = item.icon;
+                  
+                  return active ? (
+                    <MovingBorderButton
+                      key={item.href}
+                      as={Link}
+                      href={item.href}
+                      borderRadius="0.75rem"
+                      className="px-3 py-2 text-sm justify-start"
+                      duration={4000}
+                    >
+                      <Icon size={18} />
+                      {item.label}
+                    </MovingBorderButton>
+                  ) : (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors text-gray-700 dark:text-gray-300 hover:bg-white/[0.15] dark:hover:bg-black/[0.2] bg-white/[0.08] dark:bg-black/[0.12] border border-white/[0.1] dark:border-white/[0.05]"
+                    >
+                      <Icon size={18} />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );

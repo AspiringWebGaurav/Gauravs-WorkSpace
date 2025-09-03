@@ -59,12 +59,15 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+      className="relative flex items-center justify-center"
       style={{ height: 'calc(100vh - 64px - 120px)' }}
       data-page="home"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      {/* Subtle background pattern that allows aurora to show through */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.01]"></div>
+      
+      {/* Semi-transparent overlay for better text readability */}
+      <div className="absolute inset-0 bg-white/[0.15] dark:bg-black/[0.15] backdrop-blur-[0.5px]"></div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center w-full">
         <motion.div

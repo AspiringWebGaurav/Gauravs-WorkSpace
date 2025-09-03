@@ -1,92 +1,150 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import Link from "next/link";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { MovingBorderButton } from "@/components/ui/moving-border";
+import { NAVIGATION_LINKS, TECH_STACK, SOCIAL_LINKS, isActiveLink } from "@/lib/constants";
+import { useCurrentYear, useHydrationSafe } from "@/hooks/useHydrationSafe";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = useCurrentYear();
+  const pathname = usePathname();
+  const mounted = useHydrationSafe();
 
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          {/* Copyright */}
-          <div className="text-center md:text-left">
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              © {currentYear} Gaurav Patil. All rights reserved.
-            </p>
-            <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">
-              Built with Next.js + Firebase
-            </p>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex items-center space-x-6">
-            <Link
-              href="https://github.com/gauravpatil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </Link>
-            <Link
-              href="https://linkedin.com/in/gauravpatil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={20} />
-            </Link>
-            <Link
-              href="mailto:gaurav@example.com"
-              className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200"
-              aria-label="Email"
-            >
-              <Mail size={20} />
-            </Link>
-          </div>
-
-          {/* Tech Stack */}
-          <div className="text-center md:text-right">
-            <p className="text-gray-500 dark:text-gray-500 text-xs">
-              Powered by
-            </p>
-            <div className="flex items-center space-x-2 mt-1">
-              <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
-                Next.js
-              </span>
-              <span className="text-gray-400 dark:text-gray-600">•</span>
-              <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
-                Firebase
-              </span>
-              <span className="text-gray-400 dark:text-gray-600">•</span>
-              <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
-                TailwindCSS
-              </span>
+    <footer className="relative border-t border-white/[0.1] dark:border-white/[0.05]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Primary row */}
+        <div className="py-10 grid gap-8 md:grid-cols-3 items-center">
+          {/* Brand / tagline */}
+          <div className="flex items-center gap-3">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm">
+              GW
             </div>
+            <div>
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                Gaurav&rsquo;s Workspace
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Crafting modern web solutions with care.
+              </p>
+            </div>
+          </div>
+
+          {/* Nav links as pills - only render after hydration to prevent mismatch */}
+          <nav className="flex flex-wrap gap-2 md:justify-center">
+            {mounted && NAVIGATION_LINKS.map((item) => {
+              const active = isActiveLink(pathname, item.href);
+              
+              return active ? (
+                <MovingBorderButton
+                  key={item.href}
+                  as={Link}
+                  href={item.href}
+                  borderRadius="1.5rem"
+                  className="px-3 py-1.5 text-sm"
+                  duration={4000}
+                >
+                  {item.label}
+                </MovingBorderButton>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="inline-flex items-center rounded-full border border-white/[0.1] dark:border-white/[0.05] px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors bg-white/[0.08] dark:bg-black/[0.12] hover:bg-white/[0.15] dark:hover:bg-black/[0.2]"
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Socials */}
+          <div className="flex md:justify-end gap-3">
+            <IconButton
+              href={SOCIAL_LINKS[0].href}
+              label={SOCIAL_LINKS[0].label}
+              icon={<Github size={18} />}
+            />
+            <IconButton
+              href={SOCIAL_LINKS[1].href}
+              label={SOCIAL_LINKS[1].label}
+              icon={<Linkedin size={18} />}
+            />
+            <IconButton
+              href={SOCIAL_LINKS[2].href}
+              label={SOCIAL_LINKS[2].label}
+              icon={<Mail size={18} />}
+            />
           </div>
         </div>
 
         {/* Divider */}
-        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
-          <div className="text-center">
-            <p className="text-gray-500 dark:text-gray-500 text-xs">
-              This portfolio is open source and available on{' '}
-              <Link
-                href="https://github.com/gauravpatil/workspace"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+        <div className="border-t border-gray-200 dark:border-gray-800" />
+
+        {/* Secondary row */}
+        <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Tech badges */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Built with
+            </span>
+            {TECH_STACK.map((tech) => (
+              <span
+                key={tech}
+                className="rounded-full bg-gray-100 dark:bg-gray-800/70 px-2.5 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 ring-1 ring-inset ring-gray-200/70 dark:ring-gray-700"
               >
-                GitHub
-              </Link>
-            </p>
+                {tech}
+              </span>
+            ))}
           </div>
+
+          {/* Open source link */}
+          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+            Open source on{" "}
+            <Link
+              href="https://github.com/gauravpatil/workspace"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 underline-offset-4 hover:underline"
+            >
+              GitHub
+            </Link>
+          </p>
+
+          {/* Copyright */}
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            © {year} Gaurav Patil. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
+  );
+}
+
+/** Small glassy icon button for socials */
+function IconButton({
+  href,
+  label,
+  icon,
+}: {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+      className="group inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/[0.1] dark:border-white/[0.05] bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-sm shadow-sm hover:shadow transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 hover:bg-white/[0.15] dark:hover:bg-black/[0.2]"
+    >
+      <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+        {icon}
+      </span>
+      <span className="sr-only">{label}</span>
+    </Link>
   );
 }

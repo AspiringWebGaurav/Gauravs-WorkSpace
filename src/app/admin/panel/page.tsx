@@ -201,8 +201,11 @@ export default function AdminPanelPage() {
   // Show loading while checking auth
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
+      <div className="min-h-screen flex items-center justify-center">
+        {/* Subtle background overlay for better readability */}
+        <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
+        
+        <div className="relative z-10 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading admin panel...</p>
         </div>
@@ -218,7 +221,10 @@ export default function AdminPanelPage() {
   const currentSectionProjects = Object.values(sections[selectedSection]?.projects || {});
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen">
+      {/* Subtle background overlay for better readability */}
+      <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
+      
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

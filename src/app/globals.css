@@ -60,7 +60,7 @@
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
@@ -111,6 +111,56 @@ body {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* Aurora Background animations */
+@keyframes aurora {
+  0% {
+    background-position: 50% 50%, 50% 50%;
+    transform: rotate(0deg) scale(1);
+  }
+  33% {
+    background-position: 150% 75%, 200% 25%;
+    transform: rotate(120deg) scale(1.1);
+  }
+  66% {
+    background-position: 250% 25%, 300% 75%;
+    transform: rotate(240deg) scale(0.9);
+  }
+  100% {
+    background-position: 350% 50%, 350% 50%;
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes aurora-slow {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 200% 50%;
+    opacity: 0.3;
+  }
+}
+
+@theme inline {
+  --animate-aurora: aurora 60s linear infinite;
+  --animate-aurora-slow: aurora-slow 90s ease-in-out infinite;
+}
+
+/* Radial gradient utility */
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+}
+
+/* Conic gradient utility */
+.bg-gradient-conic {
+  background: conic-gradient(from 0deg at 50% 50%, var(--tw-gradient-stops));
 }
 
 /* Gradient backgrounds */
