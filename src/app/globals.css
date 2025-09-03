@@ -124,3 +124,29 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Grid pattern background */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Responsive typography utilities */
+.text-fluid-5xl {
+  font-size: clamp(2.25rem, 5vw, 3rem);
+}
+
+.text-fluid-6xl {
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+}
+
+.text-fluid-7xl {
+  font-size: clamp(3rem, 7vw, 4.5rem);
+}
+
+/* Ensure no overflow on home page */
+body:has([data-page="home"]) {
+  overflow: hidden;
+}
