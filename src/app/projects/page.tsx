@@ -114,19 +114,19 @@ export default function ProjectsPage() {
 
   return (
     <Layout>
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl leading-tight font-bold text-gray-900 dark:text-white mb-4">
             My <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Projects</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base leading-relaxed text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Explore my portfolio of web applications, AI integrations, and experimental projects.
             Each project represents a unique challenge and learning experience.
           </p>
@@ -137,10 +137,10 @@ export default function ProjectsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white/[0.15] dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/[0.1] dark:border-white/[0.05] p-6 mb-8"
+          className="bg-white/[0.15] dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-lg active:shadow-md border border-white/[0.1] dark:border-white/[0.05] p-4 sm:p-6 mb-6 sm:mb-8"
         >
           {/* Search and View Toggle */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
             {/* Search */}
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -149,18 +149,18 @@ export default function ProjectsPage() {
                 placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300/50 dark:border-gray-600/50 rounded-xl bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all placeholder-gray-500 dark:placeholder-gray-400"
+                className="min-h-[44px] min-w-[44px] transition-all duration-200 w-full pl-12 pr-4 py-3.5 sm:py-3 border border-gray-300/50 dark:border-gray-600/50 rounded-xl bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base leading-relaxed"
               />
             </div>
 
             {/* View Mode Toggle */}
-            <div className="flex bg-gray-100/80 dark:bg-gray-700/80 rounded-xl p-1 backdrop-blur-sm">
+            <div className="flex bg-gray-100/80 dark:bg-gray-700/80 rounded-xl p-1 backdrop-blur-sm self-start sm:self-auto">
               <button
                 onClick={() => setViewMode('grid')}
                 title="Grid view"
-                className={`p-3 rounded-lg transition-all ${
+                className={`min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 p-3.5 sm:p-3 rounded-lg ${
                   viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400 shadow-md'
+                    ? 'bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400 shadow-lg active:shadow-md'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -169,9 +169,9 @@ export default function ProjectsPage() {
               <button
                 onClick={() => setViewMode('list')}
                 title="List view"
-                className={`p-3 rounded-lg transition-all ${
+                className={`min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 p-3.5 sm:p-3 rounded-lg ${
                   viewMode === 'list'
-                    ? 'bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400 shadow-md'
+                    ? 'bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400 shadow-lg active:shadow-md'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -181,24 +181,24 @@ export default function ProjectsPage() {
           </div>
 
           {/* Section Filter */}
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Filter by Section</h3>
+          <div className="mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3">
+              <h3 className="text-xs sm:text-sm leading-relaxed font-semibold text-gray-700 dark:text-gray-300">Filter by Section</h3>
               {(searchTerm || selectedSection !== 'all' || selectedTags.length > 0) && (
                 <button
                   onClick={clearAllFilters}
-                  className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium"
+                  className="min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 text-xs sm:text-sm leading-relaxed text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium self-start p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
                 >
                   Clear all filters
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               <button
                 onClick={() => setSelectedSection('all')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 px-4 py-2.5 rounded-full text-xs sm:text-sm leading-relaxed font-medium ${
                   selectedSection === 'all'
-                    ? 'bg-indigo-600 text-white shadow-md'
+                    ? 'bg-indigo-600 text-white shadow-lg active:shadow-md'
                     : 'bg-gray-200/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 backdrop-blur-sm'
                 }`}
               >
@@ -210,9 +210,9 @@ export default function ProjectsPage() {
                   <button
                     key={key}
                     onClick={() => setSelectedSection(key)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    className={`min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 px-4 py-2.5 rounded-full text-xs sm:text-sm leading-relaxed font-medium ${
                       selectedSection === key
-                        ? 'bg-indigo-600 text-white shadow-md'
+                        ? 'bg-indigo-600 text-white shadow-lg active:shadow-md'
                         : 'bg-gray-200/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 backdrop-blur-sm'
                     }`}
                   >
@@ -225,15 +225,15 @@ export default function ProjectsPage() {
 
           {/* Tags Filter */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Filter by Technology</h3>
+            <h3 className="text-xs sm:text-sm leading-relaxed font-semibold text-gray-700 dark:text-gray-300 mb-3">Filter by Technology</h3>
             <div className="flex flex-wrap gap-2">
               {allTags.map(tag => (
                 <button
                   key={tag}
                   onClick={() => toggleTag(tag)}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  className={`min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 px-3 py-2 rounded-full text-xs sm:text-sm leading-relaxed font-medium ${
                     selectedTags.includes(tag)
-                      ? 'bg-violet-600 text-white shadow-md'
+                      ? 'bg-violet-600 text-white shadow-lg active:shadow-md'
                       : 'bg-gray-200/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 backdrop-blur-sm'
                   }`}
                 >
@@ -251,22 +251,24 @@ export default function ProjectsPage() {
           transition={{ duration: 0.4, delay: 0.4 }}
           className="mb-8"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-6">
-              <p className="text-gray-600 dark:text-gray-400 font-medium">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+              <p className="text-sm sm:text-base leading-relaxed text-gray-600 dark:text-gray-400 font-medium">
                 Showing <span className="text-indigo-600 dark:text-indigo-400 font-bold">{filteredProjects.length}</span> of <span className="text-gray-900 dark:text-white font-bold">{allProjects.length}</span> projects
               </p>
               {selectedTags.length > 0 && (
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Filtered by:</span>
-                  {selectedTags.slice(0, 3).map(tag => (
-                    <span key={tag} className="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 text-xs rounded-full">
-                      {tag}
-                    </span>
-                  ))}
-                  {selectedTags.length > 3 && (
-                    <span className="text-xs text-gray-500 dark:text-gray-400">+{selectedTags.length - 3} more</span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-sm leading-relaxed text-gray-500 dark:text-gray-400">Filtered by:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedTags.slice(0, 2).map(tag => (
+                      <span key={tag} className="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 text-xs rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                    {selectedTags.length > 2 && (
+                      <span className="text-xs text-gray-500 dark:text-gray-400">+{selectedTags.length - 2} more</span>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -281,8 +283,8 @@ export default function ProjectsPage() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className={
               viewMode === 'grid'
-                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-                : 'space-y-6'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
+                : 'space-y-4 sm:space-y-6'
             }
           >
             {filteredProjects.map((project, index) => (
@@ -306,19 +308,19 @@ export default function ProjectsPage() {
             transition={{ duration: 0.4 }}
             className="text-center py-16"
           >
-            <div className="bg-white/[0.15] dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/[0.1] dark:border-white/[0.05] p-12 max-w-md mx-auto">
+            <div className="backdrop-blur-md bg-white/10 dark:bg-black/10 rounded-2xl shadow-lg active:shadow-md border border-white/[0.1] dark:border-white/[0.05] p-8 sm:p-12 max-w-md mx-auto">
               <div className="text-gray-400 dark:text-gray-500 mb-4">
                 <Filter size={48} className="mx-auto" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg xs:text-xl sm:text-2xl leading-tight font-semibold text-gray-900 dark:text-white mb-2">
                 No projects found
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm sm:text-base leading-relaxed text-gray-600 dark:text-gray-400 mb-4">
                 Try adjusting your search criteria or filters to find what you're looking for.
               </p>
               <button
                 onClick={clearAllFilters}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                className="min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium shadow-lg active:shadow-md"
               >
                 Clear all filters
               </button>
