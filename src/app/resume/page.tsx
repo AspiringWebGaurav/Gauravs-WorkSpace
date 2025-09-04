@@ -8,6 +8,7 @@ import { Resume } from '@/types';
 import { formatDate } from '@/lib/utils';
 import { useDownload } from '@/lib/downloadUtils';
 import { useHydrationSafe } from '@/hooks/useHydrationSafe';
+import Layout from '@/components/layout/Layout';
 
 export default function ResumePage() {
   const [resume, setResume] = useState<Resume | null>(null);
@@ -55,8 +56,9 @@ export default function ResumePage() {
   }
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Layout>
+      <div className="py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -348,7 +350,8 @@ export default function ResumePage() {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }

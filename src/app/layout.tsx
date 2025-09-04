@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import ToastProvider from "@/components/providers/ToastProvider";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,30 +53,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth [color-scheme:light_dark]">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Aurora Background Layer */}
-        <AuroraBackground />
-        
-        {/* Skip link for accessibility */}
-        <a
-          href="#content"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 z-50 rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow"
-        >
-          Skip to main content
-        </a>
-
-        <ToastProvider>
-          <div className="relative flex min-h-dvh flex-col z-10">
-            <Navbar />
-            <main id="content" className="flex-1 pt-16 relative z-10">
-              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
-              </div>
-            </main>
-            <Footer />
-          </div>
-        </ToastProvider>
+        {children}
       </body>
     </html>
   );

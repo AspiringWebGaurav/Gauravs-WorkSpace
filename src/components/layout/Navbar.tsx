@@ -30,14 +30,14 @@ export default function Navbar() {
   return (
     <nav
       className={[
-        "fixed inset-x-0 top-0 z-50 transition-all",
+        "fixed inset-x-0 top-0 z-50 transition-all w-full",
         "bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-md",
         scrolled
           ? "shadow-sm border-b border-white/[0.1] dark:border-white/[0.05]"
           : "border-b border-transparent",
       ].join(" ")}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="flex h-16 items-center justify-between">
           {/* Brand */}
           <Link href="/" className="flex items-center gap-2">

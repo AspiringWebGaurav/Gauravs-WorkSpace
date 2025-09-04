@@ -13,8 +13,8 @@ export default function Footer() {
   const mounted = useHydrationSafe();
 
   return (
-    <footer className="relative border-t border-white/[0.1] dark:border-white/[0.05]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative w-full bg-white/[0.02] dark:bg-black/[0.08] backdrop-blur-sm border-t border-white/[0.15] dark:border-white/[0.08]">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Primary row */}
         <div className="py-10 grid gap-8 md:grid-cols-3 items-center">
           {/* Brand / tagline */}
@@ -81,7 +81,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-200 dark:border-gray-800" />
+        <div className="border-t border-gray-200/60 dark:border-gray-700/60" />
 
         {/* Secondary row */}
         <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -139,7 +139,7 @@ function IconButton({
       aria-label={label}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/[0.1] dark:border-white/[0.05] bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-sm shadow-sm hover:shadow transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 hover:bg-white/[0.15] dark:hover:bg-black/[0.2]"
+      className="group inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/[0.15] dark:border-white/[0.1] bg-white/[0.12] dark:bg-black/[0.15] backdrop-blur-sm shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 hover:bg-white/[0.2] dark:hover:bg-black/[0.25]"
     >
       <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
         {icon}

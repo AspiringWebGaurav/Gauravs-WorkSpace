@@ -29,6 +29,7 @@ import ProjectForm from '@/components/admin/ProjectForm';
 import ResumeManager from '@/components/admin/ResumeManager';
 import EnhancedAdminDashboard from '@/components/admin/EnhancedAdminDashboard';
 import { useToast } from '@/components/providers/ToastProvider';
+import ToastProvider from '@/components/providers/ToastProvider';
 
 export default function AdminPanelPage() {
   const [sections, setSections] = useState<Record<string, ProjectSectionType>>({});
@@ -221,9 +222,10 @@ export default function AdminPanelPage() {
   const currentSectionProjects = Object.values(sections[selectedSection]?.projects || {});
 
   return (
-    <div className="min-h-screen">
-      {/* Subtle background overlay for better readability */}
-      <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
+    <ToastProvider>
+      <div className="min-h-screen">
+        {/* Subtle background overlay for better readability */}
+        <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
       
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
@@ -318,7 +320,8 @@ export default function AdminPanelPage() {
             setEditingProject(null);
           }}
         />
-      )}
-    </div>
+        )}
+      </div>
+    </ToastProvider>
   );
 }

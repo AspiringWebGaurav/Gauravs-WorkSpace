@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
 import { useAuthState } from '@/hooks/useAuth';
 import { validateEmail } from '@/lib/utils';
+import Layout from '@/components/layout/Layout';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -90,11 +91,12 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      {/* Subtle background overlay for better readability */}
-      <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
-      
-      <motion.div
+    <Layout>
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        {/* Subtle background overlay for better readability */}
+        <div className="fixed inset-0 bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-[0.5px] pointer-events-none"></div>
+        
+        <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -247,7 +249,8 @@ export default function AdminLoginPage() {
             ← Back to Home
           </a>
         </motion.div>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
+    </Layout>
   );
 }
