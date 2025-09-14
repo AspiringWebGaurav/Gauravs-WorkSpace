@@ -14,33 +14,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gaurav's Workspace - Full Stack Developer Portfolio",
-  description:
-    "Welcome to Gaurav Patil's portfolio workspace. Explore my projects, download my resume, and discover my work in web development, AI integration, and more.",
-  keywords: [
-    "Gaurav Patil",
-    "Full Stack Developer",
-    "Portfolio",
-    "Web Development",
-    "React",
-    "Next.js",
-    "Firebase",
-  ],
+  title: "Gaurav Workspace",
+  description: "Your personal workspace by Gaurav — projects, notes and files in one place.",
+  keywords: ["Gaurav Workspace","workspace","projects","files","notes","GW"],
+  metadataBase: new URL("https://gauravs-work-space.vercel.app"),
   authors: [{ name: "Gaurav Patil" }],
   creator: "Gaurav Patil",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/icon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
-    title: "Gaurav's Workspace - Full Stack Developer Portfolio",
-    description:
-      "Welcome to Gaurav Patil's portfolio workspace. Explore my projects, download my resume, and discover my work in web development, AI integration, and more.",
-    url: "https://gauravs-workspace.vercel.app",
-    siteName: "Gaurav's Workspace",
     type: "website",
+    url: "https://gauravs-work-space.vercel.app",
+    siteName: "Gaurav Workspace",
+    title: "Gaurav Workspace",
+    description: "Your personal workspace by Gaurav.",
+    images: [{
+      url: "/icon-512x512.png",
+      width: 512,
+      height: 512,
+      alt: "Gaurav Workspace"
+    }]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gaurav's Workspace - Full Stack Developer Portfolio",
-    description:
-      "Welcome to Gaurav Patil's portfolio workspace. Explore my projects, download my resume, and discover my work in web development, AI integration, and more.",
+    title: "Gaurav Workspace",
+    description: "Your personal workspace by Gaurav.",
+    images: ["/icon-512x512.png"]
   },
   robots: {
     index: true,
@@ -48,11 +50,55 @@ export const metadata: Metadata = {
   },
 };
 
+export function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: '#0fb9b1',
+  }
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="scroll-smooth [color-scheme:light_dark]">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="preload" href="/icon-32x32.png" as="image" type="image/png" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Gaurav Workspace",
+              "url": "https://gauravs-work-space.vercel.app",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://gauravs-work-space.vercel.app/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Gaurav Workspace",
+              "url": "https://gauravs-work-space.vercel.app",
+              "logo": "https://gauravs-work-space.vercel.app/icon-512x512.png"
+            })
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

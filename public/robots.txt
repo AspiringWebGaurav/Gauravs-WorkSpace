@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gauravs-work-space.vercel.app/sitemap.xml

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Download, ExternalLink, FolderOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getResume, getSections } from "@/lib/database";
@@ -87,13 +88,31 @@ export default function HeroSection() {
               Welcome to
             </motion.div>
 
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="flex items-center justify-center gap-4 mb-2"
+            >
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20">
+                <Image
+                  src="/icon-512x512.png"
+                  alt="Gaurav Workspace logo"
+                  fill
+                  sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, 80px"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </motion.div>
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight"
             >
-              Gaurav's Workspace
+              Gaurav Workspace
             </motion.h1>
 
             <motion.p

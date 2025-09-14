@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -41,11 +42,18 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Brand */}
           <Link href="/" className="transition-all duration-200 active:scale-[0.98] active:opacity-80 flex items-center gap-2 sm:gap-3 p-1 rounded-lg">
-            <span className="inline-flex h-10 w-10 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white text-sm font-semibold shadow-sm min-h-[44px] min-w-[44px]">
-              GW
-            </span>
+            <div className="relative h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] rounded-xl overflow-hidden shadow-sm">
+              <Image
+                src="/icon-512x512.png"
+                alt="Gaurav Workspace logo"
+                fill
+                sizes="(max-width: 640px) 44px, 36px"
+                className="object-contain"
+                priority
+              />
+            </div>
             <span className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100 tracking-tight">
-              Gaurav&apos;s Workspace
+              Gaurav Workspace
             </span>
           </Link>
 

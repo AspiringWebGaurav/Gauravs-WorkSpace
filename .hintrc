@@ -23,6 +23,7 @@
           "text-size-adjust"
         ]
       }
-    ]
+    ],
+    "apple-touch-icons": "off"
   }
 }
