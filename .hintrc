@@ -20,10 +20,12 @@
       "default",
       {
         "ignore": [
-          "text-size-adjust"
+          "text-size-adjust",
+          "-webkit-overflow-scrolling"
         ]
       }
     ],
-    "apple-touch-icons": "off"
+    "apple-touch-icons": "off",
+    "css-prefix-order": "off"
   }
 }

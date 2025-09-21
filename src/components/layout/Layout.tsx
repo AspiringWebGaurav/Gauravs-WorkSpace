@@ -11,7 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children, className = "" }: LayoutProps) {
   return (
-    <div className="min-h-dvh flex flex-col">
+    <div className="h-dvh overflow-hidden flex flex-col">
       {/* Aurora Background Layer */}
       <AuroraBackground />
       
@@ -24,16 +24,16 @@ export default function Layout({ children, className = "" }: LayoutProps) {
       </a>
 
       <ToastProvider>
-        <div className="relative flex min-h-dvh flex-col z-10">
-          {/* Full-width Navbar */}
+        <div className="relative flex h-full flex-col z-10">
+          {/* Fixed-height Navbar */}
           <Navbar />
           
-          {/* Main content area with proper spacing */}
-          <main id="content" className={`flex-1 pt-16 relative z-10 ${className}`}>
+          {/* Main content area that grows to fill available space */}
+          <main id="content" className={`flex-1 relative z-10 overflow-hidden ${className}`}>
             {children}
           </main>
           
-          {/* Full-width Footer */}
+          {/* Auto-height Footer */}
           <Footer />
         </div>
       </ToastProvider>

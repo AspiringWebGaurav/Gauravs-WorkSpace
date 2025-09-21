@@ -196,18 +196,65 @@ body {
   font-size: clamp(3rem, 7vw, 4.5rem);
 }
 
-/* Home page layout improvements - removed overflow hidden to show footer */
-/* Note: Previous body:has([data-page="home"]) rule removed as it was empty */
+/* Home page viewport constraints */
+body:has([data-page="home"]) {
+  overflow: hidden;
+}
 
-/* Mobile viewport optimizations */
+/* Ensure Home page fills exact viewport without scrolling */
+[data-page="home"] {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Safe area handling for iOS devices */
+@supports (padding: max(0px)) {
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+  
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+}
+
+/* Enhanced mobile viewport optimizations */
 @media (max-width: 640px) {
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Prevent zoom on input focus */
+    -webkit-user-scalable: no;
+    user-scalable: no;
   }
   
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent overscroll bounce on iOS */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Ensure buttons and interactive elements are properly sized for touch */
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
+/* High density displays optimizations */
+@media (min-resolution: 2dppx) {
+  body {
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Landscape mobile viewport adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  [data-page="home"] {
+    /* Tighter spacing for landscape mobile */
   }
 }

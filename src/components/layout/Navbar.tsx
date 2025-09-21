@@ -31,28 +31,34 @@ export default function Navbar() {
   return (
     <nav
       className={[
-        "fixed inset-x-0 top-0 z-50 transition-all w-full",
+        "relative w-full z-50 transition-all",
         "bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-md",
         scrolled
           ? "shadow-sm border-b border-white/[0.1] dark:border-white/[0.05]"
           : "border-b border-transparent",
       ].join(" ")}
+      style={{ height: 'clamp(3rem, 5vh, 4rem)' }}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="flex h-16 items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full">
+        <div className="flex h-full items-center justify-between">
           {/* Brand */}
           <Link href="/" className="transition-all duration-200 active:scale-[0.98] active:opacity-80 flex items-center gap-2 sm:gap-3 p-1 rounded-lg">
-            <div className="relative h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] rounded-xl overflow-hidden shadow-sm">
+            <div className="relative rounded-xl overflow-hidden shadow-sm min-h-[44px] min-w-[44px]" style={{
+              width: 'clamp(2.5rem, 4vh, 3rem)',
+              height: 'clamp(2.5rem, 4vh, 3rem)'
+            }}>
               <Image
                 src="/icon-512x512.png"
                 alt="Gaurav Workspace logo"
                 fill
-                sizes="(max-width: 640px) 44px, 36px"
+                sizes="(max-width: 640px) 40px, 48px"
                 className="object-contain"
                 priority
               />
             </div>
-            <span className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100 tracking-tight">
+            <span className="font-semibold text-gray-900 dark:text-gray-100 tracking-tight" style={{
+              fontSize: 'clamp(1rem, 2.5vh, 1.125rem)'
+            }}>
               Gaurav Workspace
             </span>
           </Link>
@@ -91,14 +97,18 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-95 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200/80 dark:border-gray-800/80 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/10 dark:hover:bg-black/10 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="md:hidden min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-95 inline-flex items-center justify-center rounded-xl border border-gray-200/80 dark:border-gray-800/80 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/10 dark:hover:bg-black/10 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            style={{
+              width: 'clamp(2.75rem, 4vh, 3rem)',
+              height: 'clamp(2.75rem, 4vh, 3rem)'
+            }}
             aria-label="Toggle navigation"
           >
             <motion.div
               animate={{ rotate: open ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              {open ? <X size={22} /> : <Menu size={22} />}
+              {open ? <X size={20} /> : <Menu size={20} />}
             </motion.div>
           </button>
         </div>

@@ -55,6 +55,7 @@ export function generateViewport() {
     width: 'device-width',
     initialScale: 1,
     themeColor: '#0fb9b1',
+    colorScheme: 'light dark'
   }
 }
 
