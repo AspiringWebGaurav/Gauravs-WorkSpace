@@ -14,6 +14,17 @@ export const getSections = async () => {
   }
 };
 
+// Update a section (like otherPortfolio)
+export const updateSection = async (sectionName: string, data: any) => {
+  try {
+    const sectionRef = ref(database, `sections/${sectionName}`);
+    await set(sectionRef, data);
+  } catch (error) {
+    console.error(`Error updating section ${sectionName}:`, error);
+    throw error;
+  }
+};
+
 // Get projects from a specific section
 export const getProjectsBySection = async (sectionName: string) => {
   try {

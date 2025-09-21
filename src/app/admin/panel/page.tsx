@@ -7,7 +7,8 @@ import {
   LogOut,
   Settings,
   FolderOpen,
-  FileText
+  FileText,
+  Cog
 } from 'lucide-react';
 import { useAuthState } from '@/hooks/useAuth';
 import {
@@ -28,6 +29,7 @@ import { Project, ProjectSection as ProjectSectionType, Resume } from '@/types';
 import ProjectForm from '@/components/admin/ProjectForm';
 import ResumeManager from '@/components/admin/ResumeManager';
 import EnhancedAdminDashboard from '@/components/admin/EnhancedAdminDashboard';
+import SettingsManager from '@/components/admin/SettingsManager';
 import { useToast } from '@/components/providers/ToastProvider';
 import ToastProvider from '@/components/providers/ToastProvider';
 
@@ -35,7 +37,7 @@ export default function AdminPanelPage() {
   const [sections, setSections] = useState<Record<string, ProjectSectionType>>({});
   const [resume, setResume] = useState<Resume | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'projects' | 'resume'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'resume' | 'settings'>('projects');
   const [selectedSection, setSelectedSection] = useState<string>('portfolio');
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [showProjectForm, setShowProjectForm] = useState(false);
@@ -280,6 +282,17 @@ export default function AdminPanelPage() {
                 <FileText className="inline-block w-4 h-4 mr-2" />
                 Manage Resume
               </button>
+              <button
+                onClick={() => setActiveTab('settings')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === 'settings'
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                }`}
+              >
+                <Cog className="inline-block w-4 h-4 mr-2" />
+                Settings
+              </button>
             </nav>
           </div>
         </div>
@@ -307,8 +320,13 @@ export default function AdminPanelPage() {
             onResumeDelete={handleResumeDelete}
           />
         )}
-      </div>
 
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <SettingsManager />
+        )}
+
+      </div>
       {/* Project Form Modal */}
       {showProjectForm && (
         <ProjectForm
