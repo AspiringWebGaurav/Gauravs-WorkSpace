@@ -183,7 +183,7 @@ body {
   background-size: 20px 20px;
 }
 
-/* Responsive typography utilities */
+/* Enhanced Responsive typography utilities for better desktop scaling */
 .text-fluid-5xl {
   font-size: clamp(2.25rem, 5vw, 3rem);
 }
@@ -196,6 +196,57 @@ body {
   font-size: clamp(3rem, 7vw, 4.5rem);
 }
 
+/* Desktop-optimized typography utilities */
+.text-desktop-hero {
+  font-size: clamp(2rem, 4vw + 1rem, 6rem);
+  line-height: clamp(2.5rem, 4vw + 1.5rem, 6.5rem);
+}
+
+.text-desktop-subtitle {
+  font-size: clamp(1rem, 2vw + 0.5rem, 1.75rem);
+  line-height: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+}
+
+.text-desktop-body {
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1.25rem);
+  line-height: clamp(1.25rem, 1vw + 0.75rem, 1.75rem);
+}
+
+.text-desktop-stats {
+  font-size: clamp(1.5rem, 3vw + 0.5rem, 3.5rem);
+  line-height: clamp(1.8rem, 3.6vw + 0.6rem, 4.2rem);
+}
+
+.text-desktop-label {
+  font-size: clamp(0.75rem, 1vw + 0.25rem, 1rem);
+  line-height: clamp(1rem, 1vw + 0.5rem, 1.5rem);
+}
+
+.text-desktop-welcome {
+  font-size: clamp(0.75rem, 1vw + 0.25rem, 1.125rem);
+}
+
+/* Enhanced spacing utilities for desktop */
+.space-desktop-hero {
+  gap: clamp(1rem, 2vw + 0.5rem, 3rem);
+}
+
+.space-desktop-buttons {
+  gap: clamp(0.75rem, 1.5vw + 0.25rem, 2rem);
+}
+
+.space-desktop-stats {
+  gap: clamp(1rem, 2vw + 0.5rem, 3rem);
+}
+
+/* Desktop button sizing */
+.btn-desktop-size {
+  padding: clamp(0.75rem, 1vw + 0.25rem, 1.5rem) clamp(1.5rem, 2vw + 0.5rem, 3rem);
+  font-size: clamp(0.875rem, 1vw + 0.25rem, 1.125rem);
+  min-width: clamp(200px, 15vw + 50px, 280px);
+  min-height: clamp(44px, 3vw + 20px, 64px);
+}
+
 /* Home page viewport constraints */
 body:has([data-page="home"]) {
   overflow: hidden;
@@ -204,7 +255,7 @@ body:has([data-page="home"]) {
 /* Ensure Home page fills exact viewport without scrolling */
 [data-page="home"] {
   height: 100%;
-  overflow: hidden;
+  overflow: visible; /* Allow content to be visible if it exceeds container */
 }
 
 /* Safe area handling for iOS devices */
@@ -223,9 +274,7 @@ body:has([data-page="home"]) {
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* Prevent zoom on input focus */
-    -webkit-user-scalable: no;
-    user-scalable: no;
+    /* Note: To prevent zoom on input focus, add user-scalable=no to viewport meta tag in HTML */
   }
   
   body {
@@ -246,7 +295,6 @@ body:has([data-page="home"]) {
 /* High density displays optimizations */
 @media (min-resolution: 2dppx) {
   body {
-    font-smoothing: antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -255,6 +303,125 @@ body:has([data-page="home"]) {
 /* Landscape mobile viewport adjustments */
 @media (max-height: 500px) and (orientation: landscape) {
   [data-page="home"] {
-    /* Tighter spacing for landscape mobile */
+    padding: 0.5rem;
+  }
+}
+
+/* Enhanced Desktop Responsive Breakpoints */
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .text-desktop-hero {
+    font-size: clamp(4rem, 5vw, 6rem);
+    line-height: clamp(4.5rem, 5.5vw, 6.5rem);
+  }
+  
+  .text-desktop-subtitle {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: clamp(1.75rem, 2.5vw, 2.25rem);
+  }
+  
+  .text-desktop-body {
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    line-height: clamp(1.5rem, 1.8vw, 1.75rem);
+  }
+  
+  .text-desktop-stats {
+    font-size: clamp(2.5rem, 3vw, 3.5rem);
+    line-height: clamp(3rem, 3.6vw, 4.2rem);
+  }
+  
+  .btn-desktop-size {
+    padding: clamp(1rem, 1.2vw, 1.5rem) clamp(2rem, 2.5vw, 3rem);
+    font-size: clamp(1rem, 1.1vw, 1.125rem);
+    min-width: clamp(240px, 18vw, 300px);
+    min-height: clamp(52px, 4vw, 64px);
+  }
+  
+  .space-desktop-hero {
+    gap: clamp(2rem, 2.5vw, 3.5rem);
+  }
+  
+  .space-desktop-buttons {
+    gap: clamp(1.25rem, 1.8vw, 2.5rem);
+  }
+}
+
+/* Extra Large Desktop (1920px+) */
+@media (min-width: 1920px) {
+  .text-desktop-hero {
+    font-size: clamp(5rem, 4.5vw, 6rem);
+    line-height: clamp(5.5rem, 5vw, 6.5rem);
+  }
+  
+  .text-desktop-subtitle {
+    font-size: clamp(1.5rem, 1.8vw, 1.75rem);
+    line-height: clamp(2rem, 2.2vw, 2.25rem);
+  }
+  
+  .text-desktop-body {
+    font-size: clamp(1.125rem, 1.1vw, 1.25rem);
+    line-height: clamp(1.625rem, 1.6vw, 1.75rem);
+  }
+  
+  .text-desktop-welcome {
+    font-size: clamp(1rem, 0.8vw, 1.125rem);
+  }
+  
+  .btn-desktop-size {
+    min-width: clamp(260px, 16vw, 300px);
+    min-height: clamp(56px, 3.5vw, 64px);
+  }
+}
+
+/* Ultra Wide Desktop (2560px+) */
+@media (min-width: 2560px) {
+  .text-desktop-hero {
+    font-size: 6rem;
+    line-height: 6.5rem;
+  }
+  
+  .text-desktop-subtitle {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-desktop-body {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-desktop-stats {
+    font-size: 3.5rem;
+    line-height: 4.2rem;
+  }
+  
+  .text-desktop-welcome {
+    font-size: 1.125rem;
+  }
+  
+  .btn-desktop-size {
+    padding: 1.5rem 3rem;
+    font-size: 1.125rem;
+    min-width: 300px;
+    min-height: 64px;
+  }
+  
+  .space-desktop-hero {
+    gap: 3.5rem;
+  }
+  
+  .space-desktop-buttons {
+    gap: 2.5rem;
+  }
+  
+  .space-desktop-stats {
+    gap: 3.5rem;
+  }
+}
+
+/* Ensure desktop content doesn't get too cramped on very tall screens */
+@media (min-width: 1024px) and (min-height: 900px) {
+  [data-page="home"] {
+    padding: clamp(2rem, 3vh, 4rem) 0;
   }
 }

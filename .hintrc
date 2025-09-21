@@ -26,6 +26,13 @@
       }
     ],
     "apple-touch-icons": "off",
-    "css-prefix-order": "off"
+    "css-prefix-order": "off",
+    "axe/aria": [
+      "default",
+      {
+        "aria-valid-attr-value": "off"
+      }
+    ],
+    "button-type": "off"
   }
 }

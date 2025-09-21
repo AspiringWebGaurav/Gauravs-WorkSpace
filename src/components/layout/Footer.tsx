@@ -107,7 +107,7 @@ export default function Footer() {
           padding: 'clamp(1rem, 2vh, 1.5rem) 0'
         }}>
           {/* Tech badges */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+          {/* <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <span className="leading-relaxed text-gray-500 dark:text-gray-400 font-medium" style={{
               fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
             }}>
@@ -125,12 +125,12 @@ export default function Footer() {
                 {tech}
               </span>
             ))}
-          </div>
+          </div> */}
 
           {/* Links row with enhanced visibility */}
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
             {/* Open source link */}
-            <p className="leading-relaxed text-gray-600 dark:text-gray-300 font-medium" style={{
+            {/* <p className="leading-relaxed text-gray-600 dark:text-gray-300 font-medium" style={{
               fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
             }}>
               Open source on{" "}
@@ -142,7 +142,7 @@ export default function Footer() {
               >
                 GitHub
               </Link>
-            </p>
+            </p> */}
 
             {/* Copyright with better contrast */}
             <p className="leading-relaxed text-gray-600 dark:text-gray-300 font-medium whitespace-nowrap" style={{

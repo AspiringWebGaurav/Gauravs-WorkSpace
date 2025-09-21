@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MovingBorderButton } from "@/components/ui/moving-border";
 import { NAVIGATION_LINKS, isActiveLink } from "@/lib/constants";
 import { useHydrationSafe } from "@/hooks/useHydrationSafe";
+import DrawerMenu from "@/components/ui/DrawerMenu";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -103,6 +104,7 @@ export default function Navbar() {
               height: 'clamp(2.75rem, 4vh, 3rem)'
             }}
             aria-label="Toggle navigation"
+            aria-expanded={open ? "true" : "false"}
           >
             <motion.div
               animate={{ rotate: open ? 180 : 0 }}
@@ -113,70 +115,12 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {open && mounted && (
-            <motion.div
-              initial={{ opacity: 0, y: -12, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.95 }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-                duration: 0.4
-              }}
-              className="md:hidden pb-6 pt-2"
-            >
-              <motion.div
-                className="grid gap-3 mt-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              >
-                {NAVIGATION_LINKS.map((item, index) => {
-                  const active = isActiveLink(pathname, item.href);
-                  const Icon = item.icon;
-                  
-                  return active ? (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.3 }}
-                    >
-                      <MovingBorderButton
-                        as={Link}
-                        href={item.href}
-                        borderRadius="0.875rem"
-                        className="min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-95 px-4 py-3 text-base justify-start font-medium shadow-lg active:shadow-md"
-                        duration={4000}
-                      >
-                        <Icon size={20} />
-                        {item.label}
-                      </MovingBorderButton>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.3 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className="min-h-[44px] min-w-[44px] transition-all duration-200 active:scale-[0.98] active:opacity-80 flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/[0.2] dark:hover:bg-black/[0.25] bg-white/[0.08] dark:bg-black/[0.12] border border-white/[0.1] dark:border-white/[0.05] shadow-lg active:shadow-md"
-                      >
-                        <Icon size={20} />
-                        {item.label}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Mobile Drawer Menu */}
+        <DrawerMenu
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          currentPath={pathname}
+        />
       </div>
     </nav>
   );

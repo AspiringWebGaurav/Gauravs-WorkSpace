@@ -54,6 +54,8 @@ export function generateViewport() {
   return {
     width: 'device-width',
     initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
     themeColor: '#0fb9b1',
     colorScheme: 'light dark'
   }
@@ -65,8 +67,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth [color-scheme:light_dark]">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="manifest" href="/manifest.json" />
         <link rel="preload" href="/icon-32x32.png" as="image" type="image/png" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
