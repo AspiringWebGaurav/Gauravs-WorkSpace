@@ -31,16 +31,20 @@ export default function Navbar() {
 
   return (
     <nav
-      className={[
-        "relative w-full z-50 transition-all",
-        "bg-white/[0.08] dark:bg-black/[0.12] backdrop-blur-md",
-        scrolled
-          ? "shadow-sm border-b border-white/[0.1] dark:border-white/[0.05]"
-          : "border-b border-transparent",
-      ].join(" ")}
+      className="relative w-full z-50 transition-all"
       style={{ height: 'clamp(3rem, 5vh, 4rem)' }}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full">
+      {/* Enhanced overlay when scrolled (maintains interaction functionality) */}
+      <div
+        className={[
+          "absolute inset-0 transition-all duration-300 z-[4]",
+          scrolled
+            ? "bg-black/5 dark:bg-black/10"
+            : "bg-transparent"
+        ].join(" ")}
+      ></div>
+
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full">
         <div className="flex h-full items-center justify-between">
           {/* Brand */}
           <Link href="/" className="transition-all duration-200 active:scale-[0.98] active:opacity-80 flex items-center gap-2 sm:gap-3 p-1 rounded-lg">
@@ -86,7 +90,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors bg-white/[0.08] dark:bg-black/[0.12] text-gray-700 dark:text-gray-300 border border-white/[0.1] dark:border-white/[0.05] hover:text-gray-900 dark:hover:text-white hover:bg-white/[0.15] dark:hover:bg-black/[0.2]"
+                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors bg-white/[0.05] dark:bg-black/[0.08] text-gray-700 dark:text-gray-300 border border-white/[0.1] dark:border-white/[0.05] hover:text-gray-900 dark:hover:text-white hover:bg-white/[0.12] dark:hover:bg-black/[0.15]"
                 >
                   <Icon size={16} />
                   {item.label}

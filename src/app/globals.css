@@ -153,6 +153,105 @@ body {
   --animate-aurora-slow: aurora-slow 90s ease-in-out infinite;
 }
 
+/* 3D Transform utilities for Marquee */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.rotate-x-12 {
+  transform: rotateX(12deg);
+}
+
+.-rotate-x-12 {
+  transform: rotateX(-12deg);
+}
+
+.rotate-y-12 {
+  transform: rotateY(12deg);
+}
+
+.-rotate-y-12 {
+  transform: rotateY(-12deg);
+}
+
+/* Marquee animations */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes marquee-down {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+@theme inline {
+  --animate-marquee-left: marquee-left 20s linear infinite;
+  --animate-marquee-right: marquee-right 20s linear infinite;
+  --animate-marquee-up: marquee-up 20s linear infinite;
+  --animate-marquee-down: marquee-down 20s linear infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+}
+
+/* Shimmer animation for buttons */
+@keyframes shimmer {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Enhanced performance for 3D animations */
+.transform-gpu {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Respect reduced motion preferences for 3D effects */
+@media (prefers-reduced-motion: reduce) {
+  .perspective-1000 {
+    perspective: none;
+  }
+  
+  .transform-style-preserve-3d {
+    transform-style: flat;
+  }
+  
+  .rotate-x-12,
+  .-rotate-x-12,
+  .rotate-y-12,
+  .-rotate-y-12 {
+    transform: none;
+  }
+  
+  [class*="animate-marquee"] {
+    animation: none;
+  }
+}
+
 /* Radial gradient utility */
 .bg-gradient-radial {
   background: radial-gradient(ellipse at center, var(--tw-gradient-stops));

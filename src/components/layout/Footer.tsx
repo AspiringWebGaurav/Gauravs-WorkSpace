@@ -13,10 +13,10 @@ export default function Footer() {
   const mounted = useHydrationSafe();
 
   return (
-    <footer className="relative w-full backdrop-blur-md bg-white/10 dark:bg-black/10 border-t border-white/[0.15] dark:border-white/[0.08]" style={{
+    <footer className="relative w-full" style={{
       minHeight: 'clamp(8rem, 12vh, 12rem)'
     }}>
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full flex flex-col justify-center">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full flex flex-col justify-center">
         {/* Primary row */}
         <div className="grid gap-4 md:gap-6 md:grid-cols-3 items-center" style={{
           padding: 'clamp(1rem, 3vh, 2rem) 0'

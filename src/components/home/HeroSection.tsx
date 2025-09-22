@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Download, ExternalLink, FolderOpen } from "lucide-react";
+import { Download, ExternalLink, FolderOpen, Contact, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getResume, getSections } from "@/lib/database";
 import { Resume } from "@/types";
 import { useDownload } from "@/lib/downloadUtils";
+import ShimmerButton from "@/components/ui/ShimmerButton";
 
 export default function HeroSection() {
   const [resume, setResume] = useState<Resume | null>(null);
@@ -58,17 +59,21 @@ export default function HeroSection() {
     router.push("/projects");
   };
 
+  const handleContactForm = () => {
+    // TODO: Implement contact form functionality
+    console.log("Contact form clicked - to be implemented");
+  };
+
+  const handleAskAnything = () => {
+    // TODO: Implement ask anything functionality
+    console.log("Ask anything clicked - to be implemented");
+  };
+
   return (
     <section
-      className="relative flex items-center justify-center h-full py-4 sm:py-8 lg:py-12"
+      className="relative flex items-center justify-center h-full"
       data-page="home"
     >
-      {/* Subtle background pattern that allows aurora to show through */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.01]"></div>
-
-      {/* Semi-transparent overlay for better text readability */}
-      <div className="absolute inset-0 backdrop-blur-md bg-white/10 dark:bg-black/10"></div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 text-center w-full h-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -133,40 +138,62 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="space-desktop-buttons flex flex-col sm:flex-row justify-center items-center max-w-5xl mx-auto px-2 sm:px-4"
           >
-            <button
+            <ShimmerButton
               onClick={handleDownloadResume}
               disabled={!resume}
-              className="btn-desktop-size group flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto active:scale-95"
+              className="btn-desktop-size group flex items-center justify-center space-x-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:transform-none disabled:opacity-50 w-full sm:w-auto active:scale-95"
             >
               <Download
                 size={18}
                 className="group-hover:animate-bounce"
               />
               <span>Download Resume</span>
-            </button>
+            </ShimmerButton>
 
-            <button
+            <ShimmerButton
               onClick={handleVisitPortfolio}
               disabled={!otherPortfolioUrl}
-              className="btn-desktop-size group flex items-center justify-center space-x-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto active:scale-95"
+              className="btn-desktop-size group flex items-center justify-center space-x-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:transform-none disabled:opacity-50 w-full sm:w-auto active:scale-95"
             >
               <ExternalLink
                 size={18}
                 className="group-hover:rotate-45 transition-transform duration-300"
               />
               <span>Visit Main Portfolio</span>
-            </button>
+            </ShimmerButton>
 
-            <button
+            <ShimmerButton
               onClick={handleSeeProjects}
-              className="btn-desktop-size group flex items-center justify-center space-x-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-400 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg w-full sm:w-auto active:scale-95"
+              className="btn-desktop-size group flex items-center justify-center space-x-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg w-full sm:w-auto active:scale-95"
             >
               <FolderOpen
                 size={18}
                 className="group-hover:scale-110 transition-transform duration-300"
               />
               <span>See Projects</span>
-            </button>
+            </ShimmerButton>
+
+            <ShimmerButton
+              onClick={handleContactForm}
+              className="btn-desktop-size group flex items-center justify-center space-x-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg w-full sm:w-auto active:scale-95"
+            >
+              <Contact
+                size={18}
+                className="group-hover:rotate-12 transition-transform duration-300"
+              />
+              <span>Contact me via Form</span>
+            </ShimmerButton>
+
+            <ShimmerButton
+              onClick={handleAskAnything}
+              className="btn-desktop-size group flex items-center justify-center space-x-2 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg w-full sm:w-auto active:scale-95"
+            >
+              <MessageCircle
+                size={18}
+                className="group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300"
+              />
+              <span>Ask me Anything</span>
+            </ShimmerButton>
           </motion.div>
 
       
