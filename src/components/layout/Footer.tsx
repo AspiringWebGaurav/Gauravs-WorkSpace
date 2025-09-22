@@ -98,60 +98,6 @@ export default function Footer() {
             />
           </div>
         </div>
-
-        {/* Divider */}
-        <div className="border-t border-gray-200/60 dark:border-gray-700/60" />
-
-        {/* Secondary row with improved visibility */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left" style={{
-          padding: 'clamp(1rem, 2vh, 1.5rem) 0'
-        }}>
-          {/* Tech badges */}
-          {/* <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <span className="leading-relaxed text-gray-500 dark:text-gray-400 font-medium" style={{
-              fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
-            }}>
-              Built with
-            </span>
-            {TECH_STACK.map((tech) => (
-              <span
-                key={tech}
-                className="transition-all duration-200 active:scale-[0.98] active:opacity-80 rounded-full bg-gray-100 dark:bg-gray-800/70 leading-relaxed font-medium text-gray-700 dark:text-gray-300 ring-1 ring-inset ring-gray-200/70 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700/90"
-                style={{
-                  padding: 'clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.75rem, 1vh, 1rem)',
-                  fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div> */}
-
-          {/* Links row with enhanced visibility */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-            {/* Open source link */}
-            {/* <p className="leading-relaxed text-gray-600 dark:text-gray-300 font-medium" style={{
-              fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
-            }}>
-              Open source on{" "}
-              <Link
-                href="https://github.com/gauravpatil/workspace"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-all duration-200 active:scale-[0.98] active:opacity-80 font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 underline-offset-4 hover:underline p-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60"
-              >
-                GitHub
-              </Link>
-            </p> */}
-
-            {/* Copyright with better contrast */}
-            <p className="leading-relaxed text-gray-600 dark:text-gray-300 font-medium whitespace-nowrap" style={{
-              fontSize: 'clamp(0.75rem, 1.25vh, 0.875rem)'
-            }}>
-              © {year} Gaurav Patil. All rights reserved.
-            </p>
-          </div>
-        </div>
       </div>
     </footer>
   );

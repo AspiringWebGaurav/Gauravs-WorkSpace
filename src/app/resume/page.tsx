@@ -141,57 +141,7 @@ export default function ResumePage() {
                 </motion.div>
 
                 {/* Quick Stats */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-4 gap-6"
-                >
-                  <div className="text-center p-6 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-600/20 hover:bg-white/40 dark:hover:bg-gray-700/40 transition-all duration-300">
-                    <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl mx-auto mb-3">
-                      <Award size={24} className="text-indigo-600 dark:text-indigo-400" />
-                    </div>
-                    <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
-                      3+
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-300 font-medium">
-                      Years Experience
-                    </div>
-                  </div>
-                  <div className="text-center p-6 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-600/20 hover:bg-white/40 dark:hover:bg-gray-700/40 transition-all duration-300">
-                    <div className="flex items-center justify-center w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl mx-auto mb-3">
-                      <Briefcase size={24} className="text-violet-600 dark:text-violet-400" />
-                    </div>
-                    <div className="text-3xl font-bold text-violet-600 dark:text-violet-400 mb-2">
-                      50+
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-300 font-medium">
-                      Projects Completed
-                    </div>
-                  </div>
-                  <div className="text-center p-6 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-600/20 hover:bg-white/40 dark:hover:bg-gray-700/40 transition-all duration-300">
-                    <div className="flex items-center justify-center w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl mx-auto mb-3">
-                      <Code size={24} className="text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
-                      15+
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-300 font-medium">
-                      Technologies
-                    </div>
-                  </div>
-                  <div className="text-center p-6 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-600/20 hover:bg-white/40 dark:hover:bg-gray-700/40 transition-all duration-300">
-                    <div className="flex items-center justify-center w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl mx-auto mb-3">
-                      <Star size={24} className="text-amber-600 dark:text-amber-400" />
-                    </div>
-                    <div className="text-3xl font-bold text-amber-600 dark:text-amber-400 mb-2">
-                      98%
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-300 font-medium">
-                      Client Satisfaction
-                    </div>
-                  </div>
-                </motion.div>
+              
 
                 {/* Skills Overview */}
                 <motion.div

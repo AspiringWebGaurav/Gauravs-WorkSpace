@@ -169,38 +169,7 @@ export default function HeroSection() {
             </button>
           </motion.div>
 
-          {/* Stats Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="space-desktop-stats grid grid-cols-3 max-w-4xl mx-auto px-2 sm:px-4"
-          >
-            <div className="text-center active:scale-[0.98] active:opacity-80 rounded-xl hover:bg-white/5 dark:hover:bg-black/5 transition-colors duration-200 p-3 sm:p-5 md:p-6">
-              <div className="text-desktop-stats font-bold text-blue-600 dark:text-blue-400 mb-2 sm:mb-3">
-                50+
-              </div>
-              <div className="text-desktop-label leading-relaxed text-gray-600 dark:text-gray-400 font-medium">
-                Projects Completed
-              </div>
-            </div>
-            <div className="text-center active:scale-[0.98] active:opacity-80 rounded-xl hover:bg-white/5 dark:hover:bg-black/5 transition-colors duration-200 p-3 sm:p-5 md:p-6">
-              <div className="text-desktop-stats font-bold text-purple-600 dark:text-purple-400 mb-2 sm:mb-3">
-                3+
-              </div>
-              <div className="text-desktop-label leading-relaxed text-gray-600 dark:text-gray-400 font-medium">
-                Years Experience
-              </div>
-            </div>
-            <div className="text-center active:scale-[0.98] active:opacity-80 rounded-xl hover:bg-white/5 dark:hover:bg-black/5 transition-colors duration-200 p-3 sm:p-5 md:p-6">
-              <div className="text-desktop-stats font-bold text-green-600 dark:text-green-400 mb-2 sm:mb-3">
-                100%
-              </div>
-              <div className="text-desktop-label leading-relaxed text-gray-600 dark:text-gray-400 font-medium">
-                Client Satisfaction
-              </div>
-            </div>
-          </motion.div>
+      
         </motion.div>
       </div>
     </section>
