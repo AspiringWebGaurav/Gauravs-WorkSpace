@@ -1,270 +1,66 @@
-# Gaurav's Workspace - Full Stack Portfolio Platform
+﻿# Gaurav Workspace
 
-A modern, full-stack portfolio platform built with Next.js, Firebase, and TailwindCSS. This platform showcases projects, provides resume downloads, and includes a complete admin panel for content management.
+A single-screen, recruiter-ready overview for Gaurav Patil. Built with Next.js (App Router), TypeScript, Tailwind CSS, and Firebase to deliver instant resume downloads, VibeCoding beta highlights, and an admin cockpit for content management.
 
-## 🚀 Features
+## Stack
+- Next.js 15 (App Router, TypeScript)
+- Tailwind CSS 3
+- Firebase Web SDK (Auth, Firestore, Storage)
+- React Hook Form + Zod for form handling
 
-### Public Features
-- **Responsive Design**: Mobile-first design that works on all devices
-- **Hero Section**: Dynamic introduction with call-to-action buttons
-- **Project Showcase**: Four categorized project sections (Portfolio, Beta, AI, Live Work)
-- **Project Filtering**: Advanced filtering by section, technology, and search
-- **Resume Download**: Direct PDF download functionality
-- **Smooth Animations**: Framer Motion animations throughout the site
-- **Dark Mode Support**: Automatic dark/light theme switching
+## Prerequisites
+- Node.js 20+
+- npm 10+
+- Firebase project with Firestore, Authentication, and Storage enabled
 
-### Admin Features
-- **Secure Authentication**: Firebase Auth with email/password
-- **Project Management**: Full CRUD operations for projects
-- **Image Upload**: Direct image upload to Firebase Storage
-- **Resume Management**: Upload and manage resume PDFs
-- **Real-time Updates**: Changes reflect immediately on public pages
-- **Form Validation**: Comprehensive form validation and error handling
-
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js 15.5.2 (App Router)
-- **Styling**: TailwindCSS v4
-- **UI Components**: Custom components with Acernity UI inspiration
-- **Backend**: Firebase (Auth, Realtime Database, Storage)
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Language**: TypeScript
-- **Deployment**: Vercel
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── admin/
-│   │   ├── login/         # Admin login page
-│   │   └── panel/         # Admin dashboard
-│   ├── projects/          # Projects listing page
-│   ├── resume/            # Resume page
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   └── globals.css        # Global styles
-├── components/
-│   ├── admin/             # Admin-specific components
-│   ├── home/              # Home page components
-│   ├── layout/            # Layout components (Navbar, Footer)
-│   ├── projects/          # Project-related components
-│   └── providers/         # Context providers
-├── hooks/                 # Custom React hooks
-├── lib/                   # Utility functions and Firebase config
-└── types/                 # TypeScript type definitions
-```
-
-## 🔧 Installation & Setup
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Firebase project with Auth, Realtime Database, and Storage enabled
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/gauravs-workspace.git
-cd gauravs-workspace
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Environment Configuration
-Create a `.env.local` file in the root directory:
-
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=your_database_url
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
-```
-
-### 4. Firebase Setup
-
-#### Database Structure
-Import the sample data from `firebase-database-structure.json` to your Firebase Realtime Database.
-
-#### Security Rules
-Apply the security rules from `firebase-rules.json`:
-
-**Realtime Database Rules:**
-```json
-{
-  "rules": {
-    ".read": true,
-    ".write": "auth != null && auth.token.email == 'gaurav@admin.kop'"
-  }
-}
-```
-
-**Storage Rules:**
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read: if true;
-    }
-    
-    match /images/{imageId} {
-      allow write: if request.auth != null && request.auth.token.email == 'gaurav@admin.kop'
-                   && resource.size < 5 * 1024 * 1024
-                   && request.resource.contentType.matches('image/.*');
-    }
-    
-    match /resumes/{resumeId} {
-      allow write: if request.auth != null && request.auth.token.email == 'gaurav@admin.kop'
-                   && resource.size < 10 * 1024 * 1024
-                   && request.resource.contentType == 'application/pdf';
-    }
-  }
-}
-```
-
-#### Authentication Setup
-1. Enable Email/Password authentication in Firebase Console
-2. Create an admin user with email: `gaurav@admin.kop` and password: `123456`
-
-### 5. Run Development Server
-```bash
-npm run dev
-```
-
-Visit `http://localhost:3000` to see the application.
-
-## 🚀 Deployment
-
-### Vercel Deployment
-
-1. **Connect to Vercel**:
+## Setup
+1. **Install dependencies**
    ```bash
-   npm i -g vercel
-   vercel
+   npm install
    ```
-
-2. **Set Environment Variables**:
-   Add all Firebase environment variables in the Vercel dashboard.
-
-3. **Deploy**:
+2. **Configure environment variables**
+   - Duplicate `.env.local` and fill in the real admin email for `NEXT_PUBLIC_ADMIN_EMAIL`.
+   - The Firebase public config is already included and safe to expose.
+3. **Update Firebase security rules**
+   - Replace `admin@example.com` in `firebase.rules.firestore` and `firebase.rules.storage` with the authorized admin email.
+   - Deploy rules:
+     ```bash
+     firebase deploy --only firestore:rules,storage:rules
+     ```
+4. **Provision Firebase Auth**
+   - Add the admin email to Firebase Authentication (Email/Password provider).
+5. **Run locally**
    ```bash
-   vercel --prod
+   npm run dev
    ```
+   Visit http://localhost:3000.
 
-### Manual Deployment
+## Admin Console
+- Navigate to `/admin` and sign in with the configured admin account.
+- Dashboard tabs:
+  - **Messages**: review, triage, and reply to inbound messages; status updates automatically persist.
+  - **Projects**: manage published cards (including the VibeCoding beta) and upload optimized preview images.
+  - **Settings**: manage the resume download URL, upload a fresh resume PDF (auto-updates Storage + Firestore), and set social links.
 
-1. **Build the project**:
+## Updating the Resume
+1. Visit `/admin` → **Settings**.
+2. Upload a PDF via **Upload PDF** or paste a direct download URL.
+3. Save settings. The homepage instantly prefetches the new link for an immediate download experience.
+
+## Deploying to Vercel
+1. Set the same environment variables in Vercel (`NEXT_PUBLIC_*`).
+2. Push the project to a Git repository and connect it to Vercel.
+3. Optional: commit the Firebase rules to your CI/CD process and deploy before shipping.
+4. Trigger a production deploy:
    ```bash
    npm run build
+   npm run start
    ```
+   (Vercel will run these automatically.)
 
-2. **Start production server**:
-   ```bash
-   npm start
-   ```
-
-## 📱 Usage
-
-### Public Access
-- **Home**: Browse featured projects and download resume
-- **Projects**: Filter and search through all projects
-- **Resume**: View and download the latest resume
-
-### Admin Access
-1. Navigate to `/admin/login`
-2. Login with: `gaurav@admin.kop` / `123456`
-3. Access the admin panel to:
-   - Add/edit/delete projects
-   - Upload project images
-   - Manage resume files
-   - View real-time updates
-
-## 🎨 Customization
-
-### Styling
-- Modify `src/app/globals.css` for global styles
-- Update TailwindCSS configuration in `tailwind.config.js`
-- Customize color schemes in CSS variables
-
-### Content
-- Update project data in Firebase Realtime Database
-- Modify hero section content in `src/components/home/HeroSection.tsx`
-- Customize footer links in `src/components/layout/Footer.tsx`
-
-### Firebase Configuration
-- Update Firebase credentials in `.env.local`
-- Modify database structure as needed
-- Adjust security rules for your requirements
-
-## 🔒 Security Features
-
-- **Authentication**: Secure Firebase Auth integration
-- **Authorization**: Role-based access control
-- **Input Validation**: Comprehensive form validation
-- **File Upload Security**: Type and size restrictions
-- **XSS Protection**: Content Security Policy headers
-- **HTTPS**: Enforced secure connections
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-- [ ] Home page loads with hero section
-- [ ] Projects page displays and filters correctly
-- [ ] Resume page shows download functionality
-- [ ] Admin login works with correct credentials
-- [ ] Admin panel CRUD operations function
-- [ ] Image uploads work properly
-- [ ] Resume uploads work properly
-- [ ] Responsive design on mobile devices
-- [ ] Dark mode toggle works
-- [ ] All animations render smoothly
-
-### Running Tests
-```bash
-# Add your test commands here
-npm test
-```
-
-## 📊 Performance
-
-- **Lighthouse Score**: 95+ on all metrics
-- **Core Web Vitals**: Optimized for LCP, FID, and CLS
-- **Image Optimization**: Next.js automatic image optimization
-- **Code Splitting**: Automatic route-based code splitting
-- **Caching**: Optimized caching strategies
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push to branch: `git push origin feature/new-feature`
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** for the amazing framework
-- **Firebase Team** for the backend services
-- **TailwindCSS Team** for the utility-first CSS framework
-- **Framer Motion** for smooth animations
-- **Lucide** for beautiful icons
-
-## 📞 Support
-
-For support, email gaurav@example.com or create an issue in the GitHub repository.
-
----
-
-**Built with ❤️ by Gaurav Patil**
+## Scripts
+- `npm run dev` – start the Next.js dev server
+- `npm run lint` – run ESLint
+- `npm run build` – create a production build
+- `npm run start` – start the production server locally
+- `npm run format` – format the codebase with Prettier

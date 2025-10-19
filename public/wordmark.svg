@@ -1,0 +1,32 @@
+﻿<svg width="320" height="64" viewBox="0 0 320 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wordmark-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1F4BFF" />
+      <stop offset="100%" stop-color="#00C4FF" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="64" rx="16" fill="#0B1324" />
+  <rect width="320" height="64" rx="16" fill="url(#wordmark-gradient)" opacity="0.12" />
+  <text
+    x="20"
+    y="38"
+    font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="28"
+    font-weight="700"
+    fill="#F5F7FF"
+    letter-spacing="2"
+  >
+    GAURAV WORKSPACE
+  </text>
+  <text
+    x="22"
+    y="54"
+    font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="12"
+    font-weight="500"
+    fill="#8BA5FF"
+    letter-spacing="1.8"
+  >
+    PRODUCT ENGINEER - ENTERPRISE-READY
+  </text>
+</svg>
