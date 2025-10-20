@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div
       ref={ref}
       className={cn(
-        "glass relative flex flex-col rounded-2xl border border-white/5 bg-surface/90 p-6 shadow-card transition hover:-translate-y-1 hover:shadow-lg hover:shadow-brand/20",
+        "glass relative flex flex-col rounded-2xl border border-white/5 bg-surface/90 p-6 shadow-card transition-all duration-200",
         className
       )}
       {...props}
@@ -37,10 +37,7 @@ export const CardTitle = ({
   ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h3
-    className={cn(
-      "text-lg font-semibold text-slate-50 md:text-xl",
-      className
-    )}
+    className={cn("text-lg font-semibold text-slate-50 md:text-xl", className)}
     {...props}
   />
 );
@@ -71,7 +68,10 @@ export const CardActions = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-6 flex flex-wrap items-center gap-3", className)}
+    className={cn(
+      "mt-6 flex flex-wrap items-center gap-3 relative z-10",
+      className
+    )}
     {...props}
   />
 );

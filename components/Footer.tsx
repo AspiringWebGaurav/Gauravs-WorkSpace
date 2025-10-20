@@ -1,4 +1,4 @@
-﻿'use client';
+﻿"use client";
 
 import Link from "next/link";
 import { useSettings } from "./SettingsProvider";
@@ -61,8 +61,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-white/5 bg-slate-950/70">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between md:px-8">
+    <footer className="w-full border-t border-white/5 bg-slate-950/70">
+      {/* Mobile Layout: Stack vertically */}
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-4 py-6 text-sm text-slate-400 md:hidden">
+        {/* Social Icons */}
         <div className="flex items-center gap-3">
           <Link
             href={socialLinks.github}
@@ -79,22 +81,82 @@ const Footer = () => {
             <ExternalIcon type="linkedin" />
           </Link>
         </div>
-                <p className="text-center text-xs text-slate-500 md:text-sm">
-          &copy; {year} Gaurav Workspace - Made with love by {
-            <Link
-              href="https://www.gauravpatil.online"
-              target="_blank"
-              rel="noreferrer"
-              className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
-            >
-              Gaurav
-            </Link>
-          }
+
+        {/* Copyright */}
+        <p className="text-center text-xs text-slate-500">
+          &copy; {year} Gaurav Workspace
+          <br />
+          Made with love by{" "}
+          <Link
+            href="https://www.gauravpatil.online"
+            target="_blank"
+            rel="noreferrer"
+            className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
+          >
+            Gaurav
+          </Link>
         </p>
-        <div className="flex items-center justify-center gap-4 text-xs uppercase tracking-[0.3em] text-slate-500">
-          <span>Resume</span>
-          <span>Portfolio</span>
-          <span>VibeCoding</span>
+
+        {/* Links */}
+        <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-slate-500">
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            Resume
+          </span>
+          <span className="text-slate-700">|</span>
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            Portfolio
+          </span>
+          <span className="text-slate-700">|</span>
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            VibeCoding
+          </span>
+        </div>
+      </div>
+
+      {/* Desktop Layout: Three-column */}
+      <div className="relative mx-auto hidden w-full max-w-7xl items-center px-4 py-6 text-sm text-slate-400 md:flex md:px-8">
+        {/* Left: Social Icons - Far Left */}
+        <div className="flex items-center gap-3 z-10">
+          <Link
+            href={socialLinks.github}
+            className={cn(iconClass)}
+            aria-label="GitHub"
+          >
+            <ExternalIcon type="github" />
+          </Link>
+          <Link
+            href={socialLinks.linkedin}
+            className={cn(iconClass)}
+            aria-label="LinkedIn"
+          >
+            <ExternalIcon type="linkedin" />
+          </Link>
+        </div>
+
+        {/* Center: Copyright - Absolute Center */}
+        <p className="absolute left-1/2 -translate-x-1/2 text-center text-xs text-slate-500 md:text-sm whitespace-nowrap">
+          &copy; {year} Gaurav Workspace - Made with love by{" "}
+          <Link
+            href="https://www.gauravpatil.online"
+            target="_blank"
+            rel="noreferrer"
+            className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
+          >
+            Gaurav
+          </Link>
+        </p>
+
+        {/* Right: Links - Far Right */}
+        <div className="ml-auto flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-slate-500 z-10">
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            Resume
+          </span>
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            Portfolio
+          </span>
+          <span className="hover:text-slate-300 transition cursor-pointer">
+            VibeCoding
+          </span>
         </div>
       </div>
     </footer>
@@ -102,7 +164,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-
-

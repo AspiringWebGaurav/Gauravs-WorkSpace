@@ -1,32 +1,17 @@
-﻿<svg width="320" height="64" viewBox="0 0 320 64" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="wordmark-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1F4BFF" />
-      <stop offset="100%" stop-color="#00C4FF" />
+    <linearGradient id="wmBrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wmAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="320" height="64" rx="16" fill="#0B1324" />
-  <rect width="320" height="64" rx="16" fill="url(#wordmark-gradient)" opacity="0.12" />
-  <text
-    x="20"
-    y="38"
-    font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
-    font-size="28"
-    font-weight="700"
-    fill="#F5F7FF"
-    letter-spacing="2"
-  >
-    GAURAV WORKSPACE
-  </text>
-  <text
-    x="22"
-    y="54"
-    font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
-    font-size="12"
-    font-weight="500"
-    fill="#8BA5FF"
-    letter-spacing="1.8"
-  >
-    PRODUCT ENGINEER - ENTERPRISE-READY
-  </text>
+  <rect width="40" height="40" rx="10" fill="url(#wmBrand)"/>
+  <path d="M13 12L8 20L13 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M27 12L32 20L27 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17 25L23 15" stroke="url(#wmAccent)" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="50" y="26" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#f1f5f9">Gaurav Workspace</text>
 </svg>

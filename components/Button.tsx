@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
@@ -7,7 +7,7 @@ export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const baseStyles =
-  "inline-flex items-center justify-center rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer relative z-20";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
@@ -50,7 +50,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     return (
-      <button ref={ref} type={type} className={buttonClasses(variant, size, className)} {...props}>
+      <button
+        ref={ref}
+        type={type}
+        className={buttonClasses(variant, size, className)}
+        {...props}
+      >
         {children}
       </button>
     );

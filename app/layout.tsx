@@ -14,8 +14,7 @@ const inter = Inter({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.gauravworkspace.store";
-const appName =
-  process.env.NEXT_PUBLIC_APP_NAME ?? "Gaurav Workspace";
+const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "Gaurav Workspace";
 const description =
   "Lightning-fast work overview for HR & recruiters. Access resume, portfolio, and VibeCoding beta effortlessly.";
 
@@ -81,10 +80,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} font-sans text-base`}>
         <AppProviders>
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col w-full">
             <Navbar />
             <Breadcrumbs />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 lg:flex-none w-full">{children}</main>
             <Footer />
           </div>
         </AppProviders>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,6 +32,11 @@ const Breadcrumbs = () => {
   }
 
   const condensed = segments[segments.length - 1];
+
+  // Hide breadcrumbs on homepage
+  if (pathname === "/") {
+    return null;
+  }
 
   return (
     <div className="border-b border-white/5 bg-slate-950/60 backdrop-blur">

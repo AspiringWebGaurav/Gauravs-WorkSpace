@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -77,9 +77,10 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
-        <Link href="/" className="flex items-center gap-3">
+    <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
+      <div className="relative mx-auto flex w-full max-w-7xl items-center px-4 py-4 md:px-8">
+        {/* Left: Logo - Far Left */}
+        <Link href="/" className="flex items-center gap-3 mr-auto z-10">
           <Image
             src="/logo.svg"
             alt="Gaurav Workspace logo"
@@ -91,7 +92,9 @@ const Navbar = () => {
             Gaurav Workspace
           </span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
+
+        {/* Center: Navigation - Absolute Center */}
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 z-0">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -103,9 +106,7 @@ const Navbar = () => {
                 href={item.href}
                 className={cn(
                   "rounded-full px-3 py-2 transition",
-                  isActive
-                    ? "bg-brand/20 text-slate-50"
-                    : "hover:text-slate-50"
+                  isActive ? "bg-brand/20 text-slate-50" : "hover:text-slate-50"
                 )}
               >
                 {item.label}
