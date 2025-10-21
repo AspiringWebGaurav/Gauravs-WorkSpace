@@ -9,9 +9,9 @@ import { useSettings } from "./SettingsProvider";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/vibecoding", label: "VibeCoding" },
-  { href: "/admin", label: "Admin" },
+  { href: "/", label: "Home", isBeta: false },
+  { href: "/vibecoding", label: "VibeCoding", isBeta: true },
+  { href: "/admin", label: "Admin", isBeta: false },
 ];
 
 const iconClass =
@@ -105,16 +105,23 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-full px-3 py-2 transition",
+                  "rounded-full px-3 py-2 transition flex items-center gap-1.5",
                   isActive ? "bg-brand/20 text-slate-50" : "hover:text-slate-50"
                 )}
               >
                 {item.label}
+                {item.isBeta && (
+                  <span className="inline-flex items-center rounded-full bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
+                    Beta
+                  </span>
+                )}
               </Link>
             );
           })}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
+
+        {/* Right: Social Icons - Far Right */}
+        <div className="hidden items-center gap-2 md:flex ml-auto z-10">
           <Link
             href={socialLinks.github}
             target={socialLinks.github === "#" ? "_self" : "_blank"}
@@ -178,13 +185,18 @@ const Navbar = () => {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center rounded-xl px-4 py-3 text-sm font-semibold transition",
+                    "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition",
                     isActive
                       ? "bg-brand/20 text-slate-50"
                       : "text-slate-300 hover:bg-white/5 hover:text-slate-50"
                   )}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {item.isBeta && (
+                    <span className="inline-flex items-center rounded-full bg-purple-500/20 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
+                      Beta
+                    </span>
+                  )}
                 </Link>
               );
             })}

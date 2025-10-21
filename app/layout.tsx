@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import Footer from "@/components/Footer";
 import { AppProviders } from "@/components/AppProviders";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -81,10 +80,10 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans text-base`}>
         <AppProviders>
           <div className="flex min-h-screen flex-col w-full">
-            <Navbar />
             <Breadcrumbs />
-            <main className="flex-1 lg:flex-none w-full">{children}</main>
-            <Footer />
+            <main className="flex-1 lg:flex-none w-full">
+              <LayoutWrapper>{children}</LayoutWrapper>
+            </main>
           </div>
         </AppProviders>
       </body>
