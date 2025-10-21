@@ -154,8 +154,8 @@ export default function HomePage() {
       <section className="desktop-fullscreen fixed inset-0 z-10 hidden lg:flex flex-col w-full overflow-hidden bg-slate-950">
         {/* Integrated Navbar for Desktop */}
         <nav className="relative border-b border-white/10 bg-slate-950/95 backdrop-blur-xl">
-          <div className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-3.5">
-            {/* Left: Logo & Social Icons */}
+          <div className="flex w-full items-center justify-between px-8 py-3.5">
+            {/* Left: Logo Only */}
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center gap-3">
                 <Image
@@ -170,46 +170,10 @@ export default function HomePage() {
                 </span>
               </Link>
               <span className="h-5 w-px bg-white/10" />
-              <div className="flex items-center gap-2">
-                <Link
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all duration-300 hover:border-brand/50 hover:bg-brand/10 hover:text-brand hover:scale-110"
-                  aria-label="GitHub"
-                >
-                  <svg
-                    className="h-4 w-4 transition-transform group-hover:scale-110"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 2C6.477 2 2 6.486 2 12.021c0 4.411 2.865 8.145 6.839 9.465.5.093.683-.219.683-.486 0-.239-.009-.868-.014-1.703-2.782.606-3.369-1.342-3.369-1.342-.455-1.159-1.11-1.468-1.11-1.468-.908-.621.069-.609.069-.609 1.003.071 1.531 1.032 1.531 1.032.892 1.533 2.341 1.09 2.91.834.091-.648.35-1.09.636-1.341-2.221-.256-4.555-1.114-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.257-.447-1.288.098-2.684 0 0 .84-.27 2.75 1.026A9.56 9.56 0 0 1 12 6.844c.851.004 1.705.115 2.503.338 1.908-1.297 2.747-1.026 2.747-1.026.547 1.396.203 2.427.1 2.684.642.7 1.028 1.595 1.028 2.688 0 3.847-2.338 4.692-4.566 4.943.36.312.68.927.68 1.87 0 1.35-.012 2.439-.012 2.771 0 .27.18.584.688.485A10.024 10.024 0 0 0 22 12.02C22 6.486 17.523 2 12 2Z"
-                    />
-                  </svg>
-                </Link>
-                <Link
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-accent hover:scale-110"
-                  aria-label="LinkedIn"
-                >
-                  <svg
-                    className="h-4 w-4 transition-transform group-hover:scale-110"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.352V9.5h3.414v1.496h.047c.476-.9 1.637-1.852 3.368-1.852 3.602 0 4.268 2.37 4.268 5.455v5.853ZM5.337 8.003a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124Zm1.782 12.449H3.555V9.5h3.564v10.952Z" />
-                  </svg>
-                </Link>
-              </div>
             </div>
 
             {/* Center: Navigation - Absolute Center */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2 flex-grow-0">
               <Link
                 href="/"
                 className="rounded-lg bg-white/10 px-4 py-2 text-xs font-medium text-slate-200 transition-all hover:bg-white/15"
@@ -233,8 +197,43 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Right: Empty for balance */}
-            <div className="w-[180px]" />
+            {/* Right: Social Media Links */}
+            <div className="flex items-center gap-2 justify-end">
+              <Link
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all duration-300 hover:border-brand/50 hover:bg-brand/10 hover:text-brand hover:scale-110"
+                aria-label="GitHub"
+              >
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12 2C6.477 2 2 6.486 2 12.021c0 4.411 2.865 8.145 6.839 9.465.5.093.683-.219.683-.486 0-.239-.009-.868-.014-1.703-2.782.606-3.369-1.342-3.369-1.342-.455-1.159-1.11-1.468-1.11-1.468-.908-.621.069-.609.069-.609 1.003.071 1.531 1.032 1.531 1.032.892 1.533 2.341 1.09 2.91.834.091-.648.35-1.09.636-1.341-2.221-.256-4.555-1.114-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.257-.447-1.288.098-2.684 0 0 .84-.27 2.75 1.026A9.56 9.56 0 0 1 12 6.844c.851.004 1.705.115 2.503.338 1.908-1.297 2.747-1.026 2.747-1.026.547 1.396.203 2.427.1 2.684.642.7 1.028 1.595 1.028 2.688 0 3.847-2.338 4.692-4.566 4.943.36.312.68.927.68 1.87 0 1.35-.012 2.439-.012 2.771 0 .27.18.584.688.485A10.024 10.024 0 0 0 22 12.02C22 6.486 17.523 2 12 2Z"
+                  />
+                </svg>
+              </Link>
+              <Link
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-accent hover:scale-110"
+                aria-label="LinkedIn"
+              >
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.352V9.5h3.414v1.496h.047c.476-.9 1.637-1.852 3.368-1.852 3.602 0 4.268 2.37 4.268 5.455v5.853ZM5.337 8.003a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124Zm1.782 12.449H3.555V9.5h3.564v10.952Z" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </nav>
 
@@ -281,11 +280,11 @@ export default function HomePage() {
                     type="button"
                     onClick={handleResumeClick}
                     disabled={!resumeUrl}
-                    className="space-y-1 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-brand/40 hover:bg-brand/10 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-brand/40 hover:bg-brand/10 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <div className="text-2xl font-bold text-brand">
+                    <span className="flex items-center justify-center rounded-full bg-gradient-to-br from-[#3b82f6]/10 to-[#6366f1]/20 p-2 mr-2">
                       <svg
-                        className="h-6 w-6"
+                        className="h-7 w-7 text-brand"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -297,15 +296,21 @@ export default function HomePage() {
                           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                    </div>
-                    <div className="text-xs font-medium text-slate-400">
-                      Resume Ready
-                    </div>
+                    </span>
+                    <span className="text-xl font-bold text-brand leading-tight text-left">
+                      Resume
+                      <br />
+                      Ready
+                    </span>
                   </button>
-                  <div className="space-y-1 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                    <div className="text-2xl font-bold text-accent">
+                  <button
+                    type="button"
+                    onClick={handleReachOut}
+                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-accent/40 hover:bg-accent/10 hover:scale-105"
+                  >
+                    <span className="flex items-center justify-center rounded-full bg-gradient-to-br from-[#06b6d4]/10 to-[#3b82f6]/20 p-2 mr-2">
                       <svg
-                        className="h-6 w-6"
+                        className="h-7 w-7 text-accent"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -317,11 +322,13 @@ export default function HomePage() {
                           d="M13 10V3L4 14h7v7l9-11h-7z"
                         />
                       </svg>
-                    </div>
-                    <div className="text-xs font-medium text-slate-400">
-                      Instant Access
-                    </div>
-                  </div>
+                    </span>
+                    <span className="text-xl font-bold text-accent leading-tight text-left">
+                      Instant
+                      <br />
+                      Access
+                    </span>
+                  </button>
                   <div className="space-y-1 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                     <div className="text-2xl font-bold text-success">24h</div>
                     <div className="text-xs font-medium text-slate-400">
@@ -533,9 +540,9 @@ export default function HomePage() {
 
         {/* Integrated Footer for Desktop */}
         <footer className="relative border-t border-white/10 bg-slate-950/95 backdrop-blur-xl">
-          <div className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-3.5">
+          <div className="flex w-full items-center justify-between px-8 py-3.5">
             {/* Left: Social Icons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 justify-start">
               <Link
                 href="https://github.com"
                 target="_blank"
@@ -577,7 +584,7 @@ export default function HomePage() {
             </div>
 
             {/* Center: Copyright */}
-            <div className="absolute left-1/2 -translate-x-1/2">
+            <div className="flex items-center justify-center flex-grow-0">
               <p className="text-[10px] text-slate-500 whitespace-nowrap">
                 © 2025 Gaurav Workspace · Made with{" "}
                 <span className="text-red-400">❤</span> by{" "}
@@ -593,7 +600,7 @@ export default function HomePage() {
             </div>
 
             {/* Right: Quick Links */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 justify-end">
               <button
                 type="button"
                 onClick={handleResumeClick}
