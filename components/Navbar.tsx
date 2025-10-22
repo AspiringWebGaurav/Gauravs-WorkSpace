@@ -94,7 +94,7 @@ const Navbar = () => {
         </Link>
 
         {/* Center: Navigation - Absolute Center (Desktop only) */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 z-0">
+        <nav className="hidden md:flex items-center gap-6 text-base font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 z-0">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -105,13 +105,13 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-full px-3 py-2 transition flex items-center gap-1.5",
+                  "rounded-full px-4 py-2 transition flex items-center gap-2",
                   isActive ? "bg-brand/20 text-slate-50" : "hover:text-slate-50"
                 )}
               >
                 {item.label}
                 {item.isBeta && (
-                  <span className="inline-flex items-center rounded-full bg-purple-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
+                  <span className="inline-flex items-center rounded-full bg-purple-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
                     Beta
                   </span>
                 )}
@@ -210,7 +210,7 @@ const Navbar = () => {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition",
+                    "flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition",
                     isActive
                       ? "bg-brand/20 text-slate-50"
                       : "text-slate-300 hover:bg-white/5 hover:text-slate-50"
@@ -218,7 +218,7 @@ const Navbar = () => {
                 >
                   <span>{item.label}</span>
                   {item.isBeta && (
-                    <span className="inline-flex items-center rounded-full bg-purple-500/20 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
+                    <span className="inline-flex items-center rounded-full bg-purple-500/20 px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-purple-300 border border-purple-400/30">
                       Beta
                     </span>
                   )}

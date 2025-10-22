@@ -24,6 +24,109 @@ export default function HomePage() {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [isResumeModalOpen, setResumeModalOpen] = React.useState(false);
 
+  // Auto-glow sequence: Resume → Portfolio → Contact
+  const order = [0, 1, 2] as const; // 0=Resume, 1=Portfolio, 2=Contact
+  const ON_MS = 1500;
+  const GAP_MS = 1000;
+  const FINAL_GAP_MS = 2000;
+  const RESTART_DELAY = 1000; // 1 second delay before restarting sequence
+  const [active, setActive] = React.useState<number | null>(null);
+  const [paused, setPaused] = React.useState(false);
+  const idxRef = React.useRef(0);
+  const timerRef = React.useRef<number | null>(null);
+  const restartTimerRef = React.useRef<number | null>(null);
+
+  const clearTimer = React.useCallback(() => {
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const clearRestartTimer = React.useCallback(() => {
+    if (restartTimerRef.current !== null) {
+      clearTimeout(restartTimerRef.current);
+      restartTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleNext = React.useCallback(
+    (step: number) => {
+      // Don't schedule if user is hovering
+      if (paused) return;
+
+      // step = 0 (Resume), 1 (Portfolio), 2 (Contact)
+      const offDelay = step === 2 ? FINAL_GAP_MS : GAP_MS;
+
+      // 1) turn ON current card
+      setActive(order[step]);
+
+      // 2) after ON_MS, turn OFF (active=null)
+      timerRef.current = window.setTimeout(() => {
+        if (paused) {
+          setActive(null);
+          return;
+        }
+        setActive(null);
+
+        // 3) after OFF gap, advance to next unless paused
+        timerRef.current = window.setTimeout(() => {
+          if (paused) return; // hover will restart later
+          idxRef.current = (step + 1) % order.length;
+          runCycle(); // continue loop
+        }, offDelay);
+      }, ON_MS);
+    },
+    [paused]
+  );
+
+  const runCycle = React.useCallback(() => {
+    // guard for reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (paused) return; // Don't start if paused
+    scheduleNext(idxRef.current);
+  }, [scheduleNext, paused]);
+
+  // Initial mount and visibility change handling
+  React.useEffect(() => {
+    // pause on hidden tab to avoid timer drift
+    const handleVis = () => {
+      clearTimer();
+      clearRestartTimer();
+      if (!document.hidden && !paused) {
+        idxRef.current = 0; // Reset to start
+        runCycle();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVis);
+
+    // start on mount
+    runCycle();
+    return () => {
+      clearTimer();
+      clearRestartTimer();
+      document.removeEventListener("visibilitychange", handleVis);
+    };
+  }, [clearTimer, clearRestartTimer, runCycle, paused]);
+
+  // when paused changes (hover start/end), control timers
+  React.useEffect(() => {
+    if (paused) {
+      // User is hovering - immediately stop all timers
+      clearTimer();
+      clearRestartTimer();
+    } else {
+      // User stopped hovering - wait 1 second then restart from beginning
+      clearTimer();
+      clearRestartTimer();
+
+      restartTimerRef.current = window.setTimeout(() => {
+        idxRef.current = 0; // Reset to start (Resume)
+        runCycle();
+      }, RESTART_DELAY);
+    }
+  }, [paused, clearTimer, clearRestartTimer, runCycle]);
+
   const handleResumeMissing = React.useCallback(() => {
     pushToast({
       title: "Resume not linked yet.",
@@ -84,33 +187,33 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Prefetched for instant access.
               </span>
-                  <button
-                    type="button"
-                    onClick={handleResumeClick}
-                    disabled={isResumeLoading}
-                    className="group relative flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed w-full justify-center"
-                  >
-                    <svg
-                      className="h-4 w-4 transition-transform group-hover:scale-110"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    <span>
-                      {isResumeLoading
-                        ? "Preparing..."
-                        : resumeUrl
-                          ? "Download PDF"
-                          : "Unavailable"}
-                    </span>
-                  </button>
+              <button
+                type="button"
+                onClick={handleResumeClick}
+                disabled={isResumeLoading}
+                className="group relative flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed w-full justify-center"
+              >
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <span>
+                  {isResumeLoading
+                    ? "Preparing..."
+                    : resumeUrl
+                      ? "Download PDF"
+                      : "Unavailable"}
+                </span>
+              </button>
             </CardActions>
           </Card>
           <Card>
@@ -126,27 +229,27 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Opens in a new tab.
               </span>
-                <a
-                  href={portfolioUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/40 hover:scale-105 w-full justify-center"
+              <a
+                href={portfolioUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/40 hover:scale-105 w-full justify-center"
+              >
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <svg
-                    className="h-4 w-4 transition-transform group-hover:scale-110"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                  <span>Visit Portfolio</span>
-                </a>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+                <span>Visit Portfolio</span>
+              </a>
             </CardActions>
           </Card>
           <Card>
@@ -163,26 +266,26 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Response within 24 hours.
               </span>
-                  <button
-                    type="button"
-                    onClick={handleReachOut}
-                    className="group relative flex items-center gap-2 rounded-xl bg-success px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success/30 transition-all duration-300 hover:bg-success/90 hover:shadow-xl hover:shadow-success/40 hover:scale-105 w-full justify-center"
-                  >
-                    <svg
-                      className="h-4 w-4 transition-transform group-hover:scale-110"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                      />
-                    </svg>
-                    <span>Compose Message</span>
-                  </button>
+              <button
+                type="button"
+                onClick={handleReachOut}
+                className="group relative flex items-center gap-2 rounded-xl bg-success px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success/30 transition-all duration-300 hover:bg-success/90 hover:shadow-xl hover:shadow-success/40 hover:scale-105 w-full justify-center"
+              >
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:scale-110"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                <span>Compose Message</span>
+              </button>
             </CardActions>
           </Card>
         </div>
@@ -383,10 +486,19 @@ export default function HomePage() {
             <div className="flex h-full w-full max-w-5xl flex-col justify-center gap-6">
               {/* Resume Card */}
               <div
-                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-brand/30 hover:shadow-2xl hover:shadow-brand/30 animate-fade-in"
+                data-active={active === 0 ? "true" : undefined}
+                onMouseEnter={() => {
+                  setPaused(true);
+                  setActive(0);
+                }}
+                onMouseLeave={() => {
+                  setActive(null);
+                  setPaused(false);
+                }}
+                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-brand/30 hover:shadow-2xl hover:shadow-brand/30 data-[active=true]:scale-[1.01] data-[active=true]:border-brand/30 data-[active=true]:shadow-2xl data-[active=true]:shadow-brand/30 animate-fade-in"
                 style={{ animationDelay: "0.1s" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-r from-brand/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-brand/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
                 <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">
@@ -450,10 +562,19 @@ export default function HomePage() {
 
               {/* Portfolio Card */}
               <div
-                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/30 animate-fade-in"
+                data-active={active === 1 ? "true" : undefined}
+                onMouseEnter={() => {
+                  setPaused(true);
+                  setActive(1);
+                }}
+                onMouseLeave={() => {
+                  setActive(null);
+                  setPaused(false);
+                }}
+                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/30 data-[active=true]:scale-[1.01] data-[active=true]:border-accent/30 data-[active=true]:shadow-2xl data-[active=true]:shadow-accent/30 animate-fade-in"
                 style={{ animationDelay: "0.2s" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
                 <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">
@@ -513,10 +634,19 @@ export default function HomePage() {
 
               {/* Contact Card */}
               <div
-                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-success/30 hover:shadow-2xl hover:shadow-success/30 animate-fade-in"
+                data-active={active === 2 ? "true" : undefined}
+                onMouseEnter={() => {
+                  setPaused(true);
+                  setActive(2);
+                }}
+                onMouseLeave={() => {
+                  setActive(null);
+                  setPaused(false);
+                }}
+                className="group relative flex flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] hover:border-success/30 hover:shadow-2xl hover:shadow-success/30 data-[active=true]:scale-[1.01] data-[active=true]:border-success/30 data-[active=true]:shadow-2xl data-[active=true]:shadow-success/30 animate-fade-in"
                 style={{ animationDelay: "0.3s" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-success/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-r from-success/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-success/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
                 <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">

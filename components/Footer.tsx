@@ -83,22 +83,24 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-sm text-slate-500">
           &copy; {year} Gaurav Workspace
           <br />
-          Made with love by{" "}
-          <Link
-            href="https://www.gauravpatil.online"
-            target="_blank"
-            rel="noreferrer"
-            className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
-          >
-            Gaurav
-          </Link>
+          <span className="text-xs">
+            Made with love by{" "}
+            <Link
+              href="https://www.gauravpatil.online"
+              target="_blank"
+              rel="noreferrer"
+              className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
+            >
+              Gaurav
+            </Link>
+          </span>
         </p>
 
         {/* Links */}
-        <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-slate-500">
+        <div className="flex items-center gap-3 text-xs uppercase tracking-wider text-slate-500">
           <span className="hover:text-slate-300 transition cursor-pointer">
             Resume
           </span>
@@ -134,20 +136,23 @@ const Footer = () => {
         </div>
 
         {/* Center: Copyright - Absolute Center */}
-        <p className="absolute left-1/2 -translate-x-1/2 text-center text-xs text-slate-500 md:text-sm whitespace-nowrap">
-          &copy; {year} Gaurav Workspace - Made with love by{" "}
-          <Link
-            href="https://www.gauravpatil.online"
-            target="_blank"
-            rel="noreferrer"
-            className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
-          >
-            Gaurav
-          </Link>
+        <p className="absolute left-1/2 -translate-x-1/2 text-center text-sm text-slate-500 whitespace-nowrap">
+          &copy; {year} Gaurav Workspace -{" "}
+          <span className="text-xs">
+            Made with love by{" "}
+            <Link
+              href="https://www.gauravpatil.online"
+              target="_blank"
+              rel="noreferrer"
+              className="text-slate-200 underline-offset-4 hover:text-accent hover:underline"
+            >
+              Gaurav
+            </Link>
+          </span>
         </p>
 
         {/* Right: Links - Far Right */}
-        <div className="ml-auto flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-slate-500 z-10">
+        <div className="ml-auto flex items-center gap-4 text-sm uppercase tracking-[0.2em] text-slate-500 z-10">
           <span className="hover:text-slate-300 transition cursor-pointer">
             Resume
           </span>
