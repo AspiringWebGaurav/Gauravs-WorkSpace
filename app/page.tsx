@@ -84,21 +84,33 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Prefetched for instant access.
               </span>
-              <button
-                type="button"
-                onClick={handleResumeClick}
-                className={buttonClasses(
-                  resumeUrl ? "primary" : "secondary",
-                  "sm"
-                )}
-                disabled={isResumeLoading}
-              >
-                {isResumeLoading
-                  ? "Preparing"
-                  : resumeUrl
-                    ? "Download"
-                    : "Unavailable"}
-              </button>
+                  <button
+                    type="button"
+                    onClick={handleResumeClick}
+                    disabled={isResumeLoading}
+                    className="group relative flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed w-full justify-center"
+                  >
+                    <svg
+                      className="h-4 w-4 transition-transform group-hover:scale-110"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span>
+                      {isResumeLoading
+                        ? "Preparing..."
+                        : resumeUrl
+                          ? "Download PDF"
+                          : "Unavailable"}
+                    </span>
+                  </button>
             </CardActions>
           </Card>
           <Card>
@@ -114,14 +126,27 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Opens in a new tab.
               </span>
-              <a
-                href={portfolioUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonClasses("secondary", "sm")}
-              >
-                Visit portfolio
-              </a>
+                <a
+                  href={portfolioUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/40 hover:scale-105 w-full justify-center"
+                >
+                  <svg
+                    className="h-4 w-4 transition-transform group-hover:scale-110"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                  <span>Visit Portfolio</span>
+                </a>
             </CardActions>
           </Card>
           <Card>
@@ -138,13 +163,26 @@ export default function HomePage() {
               <span className="text-xs text-slate-500">
                 Response within 24 hours.
               </span>
-              <button
-                type="button"
-                onClick={handleReachOut}
-                className={buttonClasses("primary", "sm")}
-              >
-                Compose message
-              </button>
+                  <button
+                    type="button"
+                    onClick={handleReachOut}
+                    className="group relative flex items-center gap-2 rounded-xl bg-success px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-success/30 transition-all duration-300 hover:bg-success/90 hover:shadow-xl hover:shadow-success/40 hover:scale-105 w-full justify-center"
+                  >
+                    <svg
+                      className="h-4 w-4 transition-transform group-hover:scale-110"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      />
+                    </svg>
+                    <span>Compose Message</span>
+                  </button>
             </CardActions>
           </Card>
         </div>

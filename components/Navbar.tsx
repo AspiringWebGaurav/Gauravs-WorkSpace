@@ -78,9 +78,9 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
-      <div className="relative mx-auto flex w-full max-w-7xl items-center px-4 py-4 md:px-8">
+      <div className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         {/* Left: Logo - Far Left */}
-        <Link href="/" className="flex items-center gap-3 mr-auto z-10">
+        <Link href="/" className="flex items-center gap-3 z-10">
           <Image
             src="/logo.svg"
             alt="Gaurav Workspace logo"
@@ -93,7 +93,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Center: Navigation - Absolute Center */}
+        {/* Center: Navigation - Absolute Center (Desktop only) */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 z-0">
           {navItems.map((item) => {
             const isActive =
@@ -120,8 +120,8 @@ const Navbar = () => {
           })}
         </nav>
 
-        {/* Right: Social Icons - Far Right */}
-        <div className="hidden items-center gap-2 md:flex ml-auto z-10">
+        {/* Middle: Social Icons (Mobile only) - Between Logo and Hamburger */}
+        <div className="flex items-center gap-2 md:hidden z-10">
           <Link
             href={socialLinks.github}
             target={socialLinks.github === "#" ? "_self" : "_blank"}
@@ -141,6 +141,30 @@ const Navbar = () => {
             <ExternalIcon type="linkedin" />
           </Link>
         </div>
+
+        {/* Right: Social Icons (Desktop only) - Far Right */}
+        <div className="hidden items-center gap-2 md:flex z-10">
+          <Link
+            href={socialLinks.github}
+            target={socialLinks.github === "#" ? "_self" : "_blank"}
+            rel="noreferrer"
+            className={iconClass}
+            aria-label="GitHub"
+          >
+            <ExternalIcon type="github" />
+          </Link>
+          <Link
+            href={socialLinks.linkedin}
+            target={socialLinks.linkedin === "#" ? "_self" : "_blank"}
+            rel="noreferrer"
+            className={iconClass}
+            aria-label="LinkedIn"
+          >
+            <ExternalIcon type="linkedin" />
+          </Link>
+        </div>
+
+        {/* Hamburger Menu Button (Mobile only) */}
         <Button
           variant="ghost"
           size="sm"
@@ -172,9 +196,10 @@ const Navbar = () => {
           </svg>
         </Button>
       </div>
+      {/* Mobile menu: nav links only (social links removed from here) */}
       {isOpen ? (
         <div className="md:hidden">
-          <nav className="space-y-1 border-t border-white/5 bg-slate-950/95 px-4 py-4">
+          <nav className="space-y-1 bg-slate-950/95 px-4 py-4">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -200,22 +225,6 @@ const Navbar = () => {
                 </Link>
               );
             })}
-            <div className="flex items-center gap-3 px-3 pt-3">
-              <Link
-                href={socialLinks.github}
-                className={cn(iconClass, "h-10 w-10")}
-                aria-label="GitHub"
-              >
-                <ExternalIcon type="github" />
-              </Link>
-              <Link
-                href={socialLinks.linkedin}
-                className={cn(iconClass, "h-10 w-10")}
-                aria-label="LinkedIn"
-              >
-                <ExternalIcon type="linkedin" />
-              </Link>
-            </div>
           </nav>
         </div>
       ) : null}
