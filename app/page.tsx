@@ -501,7 +501,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-brand/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-brand/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
-                <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">
+                <div className="relative z-10 flex w-full items-center justify-between gap-6 px-6 py-6 xl:gap-8 xl:px-10 xl:py-8">
                   {/* Icon - Left */}
                   <div className="flex-shrink-0">
                     <div className="rounded-2xl bg-gradient-to-br from-brand/30 to-brand/10 p-4 ring-2 ring-brand/20 backdrop-blur-sm transition-all duration-300 group-hover:scale-105 group-hover:ring-brand/40 group-hover:shadow-xl group-hover:shadow-brand/20">
@@ -522,11 +522,11 @@ export default function HomePage() {
                   </div>
 
                   {/* Content - Center */}
-                  <div className="flex-1 min-w-0 px-4">
-                    <h3 className="text-2xl font-bold text-slate-50 transition-colors group-hover:text-brand">
+                  <div className="flex-1 min-w-0 px-3 xl:px-4 max-w-md">
+                    <h3 className="text-xl xl:text-2xl font-bold text-slate-50 transition-colors group-hover:text-brand">
                       Resume
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    <p className="mt-1.5 xl:mt-2 text-xs xl:text-sm leading-relaxed text-slate-400">
                       Latest PDF. No forms, no friction.
                     </p>
                   </div>
@@ -536,7 +536,7 @@ export default function HomePage() {
                     type="button"
                     onClick={handleResumeClick}
                     disabled={isResumeLoading || !resumeUrl}
-                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-brand w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-brand min-w-[160px] xl:w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     <svg
                       className="h-4 w-4 transition-transform group-hover/btn:scale-110"
@@ -577,7 +577,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
-                <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">
+                <div className="relative z-10 flex w-full items-center justify-between gap-6 px-6 py-6 xl:gap-8 xl:px-10 xl:py-8">
                   {/* Icon - Left */}
                   <div className="flex-shrink-0">
                     <div className="rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 p-4 ring-2 ring-accent/20 backdrop-blur-sm transition-all duration-300 group-hover:scale-105 group-hover:ring-accent/40 group-hover:shadow-xl group-hover:shadow-accent/20">
@@ -598,11 +598,11 @@ export default function HomePage() {
                   </div>
 
                   {/* Content - Center */}
-                  <div className="flex-1 min-w-0 px-4">
-                    <h3 className="text-2xl font-bold text-slate-50 transition-colors group-hover:text-accent">
+                  <div className="flex-1 min-w-0 px-3 xl:px-4 max-w-md">
+                    <h3 className="text-xl xl:text-2xl font-bold text-slate-50 transition-colors group-hover:text-accent">
                       Portfolio
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    <p className="mt-1.5 xl:mt-2 text-xs xl:text-sm leading-relaxed text-slate-400">
                       Rich case studies and context.
                     </p>
                   </div>
@@ -612,7 +612,7 @@ export default function HomePage() {
                     href={portfolioUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-accent w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/40 hover:scale-105"
+                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-accent min-w-[160px] xl:w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/40 hover:scale-105"
                   >
                     <svg
                       className="h-4 w-4 transition-transform group-hover/btn:scale-110"
@@ -649,7 +649,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-success/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[active=true]:opacity-100" />
                 <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-success/5 blur-3xl transition-all duration-500 group-hover:scale-150" />
 
-                <div className="relative z-10 flex w-full items-center justify-between gap-8 px-10 py-8">
+                <div className="relative z-10 flex w-full items-center justify-between gap-6 px-6 py-6 xl:gap-8 xl:px-10 xl:py-8">
                   {/* Icon - Left */}
                   <div className="flex-shrink-0">
                     <div className="rounded-2xl bg-gradient-to-br from-success/30 to-success/10 p-4 ring-2 ring-success/20 backdrop-blur-sm transition-all duration-300 group-hover:scale-105 group-hover:ring-success/40 group-hover:shadow-xl group-hover:shadow-success/20">
@@ -670,11 +670,11 @@ export default function HomePage() {
                   </div>
 
                   {/* Content - Center */}
-                  <div className="flex-1 min-w-0 px-4">
-                    <h3 className="text-2xl font-bold text-slate-50 transition-colors group-hover:text-success">
+                  <div className="flex-1 min-w-0 px-3 xl:px-4 max-w-md">
+                    <h3 className="text-xl xl:text-2xl font-bold text-slate-50 transition-colors group-hover:text-success">
                       Contact
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    <p className="mt-1.5 xl:mt-2 text-xs xl:text-sm leading-relaxed text-slate-400">
                       Ask me anything. Replies within 24 hours.
                     </p>
                   </div>
@@ -683,7 +683,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={handleReachOut}
-                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-success w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-success/30 transition-all duration-300 hover:bg-success/90 hover:shadow-xl hover:shadow-success/40 hover:scale-105"
+                    className="group/btn relative flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-success min-w-[160px] xl:w-[180px] h-[52px] text-sm font-semibold text-white shadow-lg shadow-success/30 transition-all duration-300 hover:bg-success/90 hover:shadow-xl hover:shadow-success/40 hover:scale-105"
                   >
                     <svg
                       className="h-4 w-4 transition-transform group-hover/btn:scale-110"
